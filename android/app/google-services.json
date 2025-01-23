@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "698033405153",
+    "project_id": "aab-e-hayat-69705",
+    "storage_bucket": "aab-e-hayat-69705.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:698033405153:android:55402402b6edba0ddb4ba0",
+        "android_client_info": {
+          "package_name": "com.example.aabehayat_vendor"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCT8gKXPDANcNkpJz3YsRndpWi6E1XowE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
