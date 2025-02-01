@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 import 'package:aabehayat_vendor/Models/ShopModel.dart';
 import 'package:aabehayat_vendor/Services/ShopAuthService.dart';
@@ -136,7 +134,7 @@ String formatTimeOfDay(TimeOfDay timeOfDay) {
       throw Exception("Failed to upload one or more images");
     }
 
-    final shop = Shop(
+    final shop = ShopModel(
       shopId: DateTime.now().millisecondsSinceEpoch.toString(),
       ownerName: ownerNameController.text,
       shopName: shopNameController.text,
@@ -164,6 +162,7 @@ String formatTimeOfDay(TimeOfDay timeOfDay) {
       totalBottles: int.tryParse(totalBottlesController.text),
       accountApprove: false,
       isCertified: false,
+      shopRating: 0.0,
     );
 
     final firestoreResponse = await shopService.saveShopToFirestore(shop);

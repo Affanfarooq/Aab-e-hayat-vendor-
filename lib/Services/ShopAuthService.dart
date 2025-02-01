@@ -66,7 +66,7 @@ class ShopService {
   }
 
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  Future<Response<String>> saveShopToFirestore(Shop shop) async {
+  Future<Response<String>> saveShopToFirestore(ShopModel shop) async {
     try {
       await firestore.collection('shops').doc(shop.shopId).set(shop.toJson());
       return Response.success("Shop data saved to Firestore successfully");

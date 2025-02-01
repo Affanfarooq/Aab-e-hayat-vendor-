@@ -1,4 +1,4 @@
-class Shop {
+class ShopModel {
   final String shopId;
   final String? ownerName;
   final String? shopName;
@@ -14,8 +14,9 @@ class Shop {
   final bool? isCertified;
   final int? totalGalons;
   final int? totalBottles;
+  final double? shopRating;
 
-  Shop({
+  ShopModel({
     required this.shopId,
     this.ownerName,
     this.shopName,
@@ -31,10 +32,11 @@ class Shop {
     this.isCertified,
     this.totalGalons,
     this.totalBottles,
+    this.shopRating,
   });
 
-  factory Shop.fromJson(Map<String, dynamic> json) {
-    return Shop(
+  factory ShopModel.fromJson(Map<String, dynamic> json) {
+    return ShopModel(
       shopId: json['shopId'] ?? "",
       ownerName: json['ownerName'] ?? "",
       shopName: json['shopName'] ?? "",
@@ -68,6 +70,7 @@ class Shop {
       isCertified: json['isCertified'] ?? false,
       totalGalons: json['totalGalons'] ?? 0,
       totalBottles: json['totalBottles'] ?? 0,
+      shopRating: json['shopRating'] ?? 0.0,
     );
   }
 
@@ -102,6 +105,7 @@ class Shop {
       'isCertified': isCertified,
       'totalGalons': totalGalons,
       'totalBottles': totalBottles,
+      'shopRating': shopRating,
     };
   }
 }
