@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
-import '../../GenericWidgets/CustomDesign/circle_design.dart';
+import '../GenericWidgets/CustomDesign/circle_design.dart';
 
 class ShopRegistrationScreen extends StatefulWidget {
   const ShopRegistrationScreen({super.key});
@@ -23,30 +23,95 @@ class ShopRegistrationScreen extends StatefulWidget {
 class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
   final ShopAuthController shopController = Get.put(ShopAuthController());
   final PageController _pageController = PageController();
-  final int _totalSteps = 6; // Updated to 6 steps
-  RxInt _currentStep = 0.obs;
+  final int _totalSteps = 6;
+  final RxInt _currentStep = 0.obs;
 
   @override
   Widget build(BuildContext context) {
     double width = ScreenHelper.getScreenWidth(context);
     double height = ScreenHelper.getScreenHeight(context);
     return Scaffold(
+      floatingActionButton: Obx(
+        () => Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            if (_currentStep.value > 0)
+              Padding(
+                padding: const EdgeInsets.only(left: 20.0),
+                child: FloatingActionButton(
+                  elevation: 0,
+                  onPressed: () {
+                    _pageController.previousPage(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    );
+                  },
+                  backgroundColor: Colors.blue.shade600,
+                  shape: CircleBorder(),
+                  child: Icon(Icons.arrow_back, color: Colors.white),
+                ),
+              ),
+            SizedBox(width: 10),
+            if (_currentStep.value < _totalSteps - 1)
+              Padding(
+                padding: const EdgeInsets.only(right: 20.0),
+                child: FloatingActionButton(
+                  elevation: 0,
+                  onPressed: () {
+                    _pageController.nextPage(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    );
+                  },
+                  shape: CircleBorder(),
+                  backgroundColor: Colors.blue.shade600,
+                  child: Icon(Icons.arrow_forward, color: Colors.white),
+                ),
+              ),
+            if (_currentStep.value == _totalSteps - 1)
+              Padding(
+                padding: const EdgeInsets.only(right: 20.0),
+                child: FloatingActionButton(
+                  elevation: 0,
+                  onPressed: () {
+                    
+                  },
+                  backgroundColor: Colors.green.shade600,
+                  shape: CircleBorder(),
+                  child: Icon(Icons.check, color: Colors.white),
+                ),
+              ),
+          ],
+        ),
+      ),
       body: Stack(
         alignment: Alignment.topRight,
         children: [
           CustomPaint(
-            size: ui.Size(
-                width,
-                (height * 0.6665350318471338)
-                    .toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
+            size: ui.Size(width, (height * 0.7665350318471338).toDouble()),
             painter: CircleDesign(),
           ),
           SafeArea(
             child: Column(
               children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Shop Registration",
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: DesignConstants.kTextColor),
+                      ),
+                    ],
+                  ),
+                ),
                 Obx(() => Padding(
                       padding: const EdgeInsets.only(
-                          left: 15, right: 15, top: 30, bottom: 20),
+                          left: 15, right: 15, top: 20, bottom: 20),
                       child: _buildCustomProgressIndicator(),
                     )),
                 Expanded(
@@ -82,50 +147,50 @@ class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
                     ],
                   ),
                 ),
-                Obx(
-                  () => Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        if (_currentStep.value > 0)
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 10),
-                              child: CustomSpringButton(
-                                onPressed: () {
-                                  _pageController.previousPage(
-                                    duration: const Duration(milliseconds: 300),
-                                    curve: Curves.easeInOut,
-                                  );
-                                },
-                                text: "Back",
-                              ),
-                            ),
-                          ),
-                        if (_currentStep.value < _totalSteps - 1)
-                          Expanded(
-                            child: CustomSpringButton(
-                              onPressed: () {
-                                _pageController.nextPage(
-                                  duration: const Duration(milliseconds: 300),
-                                  curve: Curves.easeInOut,
-                                );
-                              },
-                              text: "Next",
-                            ),
-                          ),
-                        if (_currentStep.value == _totalSteps - 1)
-                          Expanded(
-                            child: CustomSpringButton(
-                              onPressed: shopController.saveShopData,
-                              text: "Submit",
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
-                )
+                // Obx(
+                //   () => Padding(
+                //     padding: const EdgeInsets.all(8.0),
+                //     child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //       children: [
+                //         if (_currentStep.value > 0)
+                //           Expanded(
+                //             child: Padding(
+                //               padding: const EdgeInsets.only(right: 10),
+                //               child: CustomSpringButton(
+                //                 onPressed: () {
+                //                   _pageController.previousPage(
+                //                     duration: const Duration(milliseconds: 300),
+                //                     curve: Curves.easeInOut,
+                //                   );
+                //                 },
+                //                 text: "Back",
+                //               ),
+                //             ),
+                //           ),
+                //         if (_currentStep.value < _totalSteps - 1)
+                //           Expanded(
+                //             child: CustomSpringButton(
+                //               onPressed: () {
+                //                 _pageController.nextPage(
+                //                   duration: const Duration(milliseconds: 300),
+                //                   curve: Curves.easeInOut,
+                //                 );
+                //               },
+                //               text: "Next",
+                //             ),
+                //           ),
+                //         if (_currentStep.value == _totalSteps - 1)
+                //           Expanded(
+                //             child: CustomSpringButton(
+                //               onPressed: shopController.saveShopData,
+                //               text: "Submit",
+                //             ),
+                //           ),
+                //       ],
+                //     ),
+                //   ),
+                // )
               ],
             ),
           ),
@@ -140,27 +205,29 @@ class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Column(
-            children: [
-              Text(
-                heading,
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: DesignConstants.kTextColor),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                description,
-                style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: DesignConstants.kLightGreyTextColor),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 10),
-            ],
-          ),
+          heading != "Your Shop Location"
+              ? Column(
+                  children: [
+                    Text(
+                      heading,
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: DesignConstants.kLightGreyTextColor),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      description,
+                      style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: DesignConstants.kLightGreyTextColor),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 10),
+                  ],
+                )
+              : SizedBox(),
           content,
         ],
       ),
@@ -179,11 +246,11 @@ class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
           ),
           _buildInputField(shopController.ownerNameController, "Owner Name"),
           SizedBox(
-            height: 20,
+            height: 10,
           ),
           _buildInputField(shopController.shopNameController, "Shop Name"),
           SizedBox(
-            height: 20,
+            height: 10,
           ),
           _buildInputField(
               shopController.shopDescriptionController, "Shop Description"),
@@ -270,25 +337,24 @@ class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
         GestureDetector(
           onTap: onPressed,
           child: DottedBorder(
-            color: Colors.grey.withOpacity(0.5), // Color of the dashed border
+            color: Colors.grey.withOpacity(0.5),
             borderType: BorderType.RRect,
-            radius: const Radius.circular(10), // Rounded corners
-            dashPattern: const [6, 3], // Dash pattern
+            radius: const Radius.circular(10),
+            dashPattern: const [6, 3],
             strokeWidth: 2,
             child: Container(
-              width: Get.width, // Card width
-              height: 250, // Card height
+              width: Get.width,
+              height: 250,
               decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(0.1), // Background color
-                borderRadius: BorderRadius.circular(10), // Rounded edges
+                color: Colors.grey.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(10),
               ),
               child: Obx(() {
                 return imageFile.value == null
                     ? Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.camera_alt,
-                              size: 40, color: Colors.grey), // Icon
+                          Icon(Icons.camera_alt, size: 40, color: Colors.grey),
                           SizedBox(height: 10),
                           Text(
                             label,
@@ -312,7 +378,7 @@ class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
                             right: 5,
                             child: GestureDetector(
                               onTap: () {
-                                imageFile.value = null; // Clear the image
+                                imageFile.value = null;
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -334,7 +400,7 @@ class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
             ),
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 15),
       ],
     );
   }
@@ -344,80 +410,88 @@ class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
       child: Padding(
         padding: const EdgeInsets.only(top: 5.0),
         child: Obx(() {
-          return Stack(
+          return Column(
             children: [
-              GoogleMap(
-                initialCameraPosition: CameraPosition(
-                  target: shopController.currentLocation.value ??
-                      LatLng(37.7749, -122.4194), // Default: San Francisco
-                  zoom: 15,
-                ),
-                onMapCreated: (GoogleMapController mapController) {
-                  if (!shopController.mapController.isCompleted) {
-                    shopController.mapController.complete(mapController);
-                  }
-                },
-                myLocationEnabled: true,
-                markers: {
-                  if (shopController.currentLocation.value != null)
-                    Marker(
-                      markerId: MarkerId("current_position"),
-                      position: shopController.currentLocation.value!,
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: DottedBorder(
+                    color: Colors.grey,
+                    strokeWidth: 2,
+                    radius: Radius.circular(12),
+                    dashPattern: [8, 4],
+                    borderType: BorderType.RRect,
+                    child: ClipRRect(
+                       borderRadius: BorderRadius.circular(12), 
+                      child: GoogleMap(
+                        initialCameraPosition: CameraPosition(
+                          target: shopController.currentLocation.value ??
+                              LatLng(37.7749, -122.4194),
+                          zoom: 15,
+                        ),
+                        onMapCreated: (GoogleMapController mapController) {
+                          if (!shopController.mapController.isCompleted) {
+                            shopController.mapController.complete(mapController);
+                          }
+                        },
+                        myLocationEnabled: true,
+                        markers: {
+                          if (shopController.currentLocation.value != null)
+                            Marker(
+                              markerId: MarkerId("current_position"),
+                              position: shopController.currentLocation.value!,
+                            ),
+                        },
+                        onCameraMove: (CameraPosition position) {
+                          shopController.onMapDragged(position.target);
+                        },
+                        onTap: (LatLng position) {
+                          shopController.onMapTapped(position);
+                        },
+                      ),
                     ),
-                },
-                onCameraMove: (CameraPosition position) {
-                  shopController.onMapDragged(position.target);
-                },
-                onTap: (LatLng position) {
-                  shopController.onMapTapped(position);
-                },
-              ),
-              Positioned(
-                bottom: 10,
-                left: 6,
-                right: 6,
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: (BorderRadius.circular(8)),
                   ),
-                  elevation: 0,
-                  color: Colors.white,
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          "Shop Location",
-                          style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          shopController.currentAddress.value,
-                          style: TextStyle(fontSize: 16),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: 10),
-                        // ElevatedButton(
-                        //   onPressed: () {
-                        //     if (shopController.currentLocation.value != null) {
-                        //       Get.back(
-                        //           result: shopController.currentLocation.value);
-                        //     } else {
-                        //       Get.snackbar("Error", "Please select a location.");
-                        //     }
-                        //   },
-                        //   child: Text("Confirm Location"),
-                        // ),
-                      ],
-                    ),
+                ),
+              ),
+              Container(
+                height: 170,
+                width: double.infinity,
+                color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "Your Shop Location",
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        shopController.currentAddress.value,
+                        style: TextStyle(fontSize: 16),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 10),
+                      // ElevatedButton(
+                      //   onPressed: () {
+                      //     if (shopController.currentLocation.value != null) {
+                      //       Get.back(
+                      //           result: shopController.currentLocation.value);
+                      //     } else {
+                      //       Get.snackbar("Error", "Please select a location.");
+                      //     }
+                      //   },
+                      //   child: Text("Confirm Location"),
+                      // ),
+                    ],
                   ),
                 ),
               ),
@@ -513,7 +587,7 @@ class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
       selectedColor: Colors.blue.shade600,
       unselectedColor: Colors.blue.shade200,
       roundedEdges: Radius.circular(20),
-      size: 10,
+      size: 8,
     );
   }
 }
