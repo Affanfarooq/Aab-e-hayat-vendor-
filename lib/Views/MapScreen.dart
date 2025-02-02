@@ -29,7 +29,7 @@ class MapScreen extends StatelessWidget {
               markers: {
                 if (controller.currentLocation.value != null)
                   Marker(
-                    markerId: MarkerId("current_position"),
+                    markerId: MarkerId("CCCC"),
                     position: controller.currentLocation.value!,
                   ),
               },
