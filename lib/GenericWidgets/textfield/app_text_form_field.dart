@@ -23,20 +23,20 @@ class AppTextField extends StatelessWidget {
       keyboardType: keyboardType,
       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: TextStyle(color: Colors.grey[800]),
+        hintStyle: TextStyle(color: Colors.grey[600]),
         filled: true,
-        fillColor: Colors.transparent,
+        fillColor: Colors.white,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey.shade600, width: 1),
+          borderSide: BorderSide(color: Colors.transparent, width: 1),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey.shade600),
+          borderSide: BorderSide(color: Colors.transparent),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey.shade600, width: 1),
+          borderSide: BorderSide(color: Colors.transparent, width: 1),
         ),
         contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 18),
       ),

@@ -39,7 +39,7 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
                       curve: Curves.easeInOut,
                     );
                   },
-                  backgroundColor: Colors.blue.shade600,
+                  backgroundColor: kPrimaryColor,
                   shape: CircleBorder(),
                   child: Icon(Icons.arrow_back, color: Colors.white),
                 ),
@@ -57,7 +57,7 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
                     );
                   },
                   shape: CircleBorder(),
-                  backgroundColor: Colors.blue.shade600,
+                  backgroundColor: kPrimaryColor,
                   child: Icon(Icons.arrow_forward, color: Colors.white),
                 ),
               ),
@@ -89,7 +89,7 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Expanded(
-                  flex: 2,
+                  flex: 3,
                   child: PageView(
                     controller: _pageController,
                     physics: const NeverScrollableScrollPhysics(),
@@ -116,7 +116,7 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
                 Expanded(
                   flex: 1,
                   child: Padding(
-                    padding: const EdgeInsets.only(bottom: 20),
+                    padding: const EdgeInsets.only(bottom: 50),
                     child: _buildCustomProgressIndicator(),
                   ),
                 ),
@@ -138,16 +138,16 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
           children: [
             Lottie.asset(
               'assets/images/$image',
-              height: 270,
+              height: 320,
               fit: BoxFit.cover,
             ),
             image!='Animation7.json'?const SizedBox(height: 20):const SizedBox(height: 0),
             Text(
               heading,
               style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: DesignConstants.kTextColor),
+                  color: kTextColor),
             ),
             const SizedBox(height: 10),
             Text(
@@ -155,7 +155,7 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
               style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  color: DesignConstants.kLightGreyTextColor),
+                  color: kLightGreyTextColor),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 50),
@@ -178,7 +178,7 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: _currentStep.value == index
-                  ? Colors.blue.shade600
+                  ? kPrimaryColor
                   : Colors.blue.shade200,
             ),
           ),

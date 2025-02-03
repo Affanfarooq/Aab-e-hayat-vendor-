@@ -1,5 +1,5 @@
 
-import 'package:aabehayat_vendor/Views/onboardingScreens.dart';
+import 'package:aabehayat_vendor/Views/LandingScreen.dart';
 import 'package:aabehayat_vendor/firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: OnBoardingScreens(),
+      home: LandingScreen(),
     );
   }
 }

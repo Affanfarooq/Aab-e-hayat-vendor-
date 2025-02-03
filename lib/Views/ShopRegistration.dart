@@ -46,7 +46,7 @@ class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
                       curve: Curves.easeInOut,
                     );
                   },
-                  backgroundColor: Colors.blue.shade600,
+                  backgroundColor: kPrimaryColor,
                   shape: CircleBorder(),
                   child: Icon(Icons.arrow_back, color: Colors.white),
                 ),
@@ -64,7 +64,7 @@ class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
                     );
                   },
                   shape: CircleBorder(),
-                  backgroundColor: Colors.blue.shade600,
+                  backgroundColor: kPrimaryColor,
                   child: Icon(Icons.arrow_forward, color: Colors.white),
                 ),
               ),
@@ -104,7 +104,7 @@ class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
                         style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: DesignConstants.kTextColor),
+                            color: kTextColor),
                       ),
                     ],
                   ),
@@ -211,9 +211,9 @@ class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
                     Text(
                       heading,
                       style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 19,
                           fontWeight: FontWeight.bold,
-                          color: DesignConstants.kLightGreyTextColor),
+                          color: kLightGreyTextColor),
                     ),
                     const SizedBox(height: 10),
                     Text(
@@ -221,7 +221,7 @@ class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
                       style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
-                          color: DesignConstants.kLightGreyTextColor),
+                          color: kLightGreyTextColor),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 10),
@@ -234,7 +234,7 @@ class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
     );
   }
 
-  // Forms for each step
+
   Widget _buildBasicInformationForm() {
     return Center(
       child: ListView(
@@ -346,7 +346,7 @@ class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
               width: Get.width,
               height: 250,
               decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(0.1),
+                color: Colors.white.withOpacity(0.4),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Obx(() {
@@ -476,7 +476,7 @@ class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
                       SizedBox(height: 10),
                       Text(
                         shopController.currentAddress.value,
-                        style: TextStyle(fontSize: 16),
+                        style: TextStyle(fontSize: 16,color: Colors.black45),
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(height: 10),
@@ -584,10 +584,10 @@ class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
     return StepProgressIndicator(
       totalSteps: _totalSteps,
       currentStep: completedSteps,
-      selectedColor: Colors.blue.shade600,
+      selectedColor: kPrimaryColor,
       unselectedColor: Colors.blue.shade200,
       roundedEdges: Radius.circular(20),
-      size: 8,
+      size: 6,
     );
   }
 }

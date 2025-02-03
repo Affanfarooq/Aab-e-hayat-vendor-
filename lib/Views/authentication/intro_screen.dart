@@ -21,7 +21,7 @@ class IntroScreen extends StatelessWidget {
                 "Discover Your \nDream Job hHere".tr,
                 style: TextStyle(
                   fontSize: 15,
-                  color: DesignConstants.kPrimaryColor,
+                  color: kPrimaryColor,
                   fontWeight: FontWeight.w900,
                 ),
               ),
@@ -30,7 +30,7 @@ class IntroScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 15,
-                  color: DesignConstants.kTextColor,
+                  color: kTextColor,
                   fontWeight: FontWeight.w900,
                 ), 
               ),
@@ -42,7 +42,7 @@ class IntroScreen extends StatelessWidget {
                     padding: EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadiusDirectional.circular(10),
-                      color: DesignConstants.kPrimaryColor,
+                      color: kPrimaryColor,
                     ),
                     child: Center(
                       child: Text(

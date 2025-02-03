@@ -31,7 +31,7 @@ class TextFieldLabel extends StatelessWidget {
                     Theme.of(context).textTheme.labelMedium!.copyWith(
                       fontWeight: FontWeight.w600,
                         fontSize: 18,
-                        color: DesignConstants.kTextFieldLabelColor
+                        color: kTextFieldLabelColor
                     ),
                     
                   ),
@@ -39,7 +39,7 @@ class TextFieldLabel extends StatelessWidget {
                     TextSpan(
                       text: ' *',
                       style: textStyle!.copyWith(
-                        color: DesignConstants.kPrimaryColor,
+                        color: kPrimaryColor,
                       ),
                     ),
                 ]),
