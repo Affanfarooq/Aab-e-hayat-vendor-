@@ -58,10 +58,15 @@ class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
                 child: FloatingActionButton(
                   elevation: 0,
                   onPressed: () {
-                    _pageController.nextPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                    );
+                    print(_currentStep);
+                    var authenticate =
+                        shopController.authtentication(_currentStep.value);
+                    if (authenticate == true) {
+                      _pageController.nextPage(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                      );
+                    }
                   },
                   shape: CircleBorder(),
                   backgroundColor: kPrimaryColor,
@@ -74,7 +79,7 @@ class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
                 child: FloatingActionButton(
                   elevation: 0,
                   onPressed: () {
-                    
+                    shopController.authtentication(6);
                   },
                   backgroundColor: Colors.green.shade600,
                   shape: CircleBorder(),
@@ -233,7 +238,6 @@ class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
       ),
     );
   }
-
 
   Widget _buildBasicInformationForm() {
     return Center(
@@ -422,7 +426,7 @@ class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
                     dashPattern: [8, 4],
                     borderType: BorderType.RRect,
                     child: ClipRRect(
-                       borderRadius: BorderRadius.circular(12), 
+                      borderRadius: BorderRadius.circular(12),
                       child: GoogleMap(
                         initialCameraPosition: CameraPosition(
                           target: shopController.currentLocation.value ??
@@ -431,7 +435,8 @@ class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
                         ),
                         onMapCreated: (GoogleMapController mapController) {
                           if (!shopController.mapController.isCompleted) {
-                            shopController.mapController.complete(mapController);
+                            shopController.mapController
+                                .complete(mapController);
                           }
                         },
                         myLocationEnabled: true,
@@ -476,7 +481,7 @@ class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
                       SizedBox(height: 10),
                       Text(
                         shopController.currentAddress.value,
-                        style: TextStyle(fontSize: 16,color: Colors.black45),
+                        style: TextStyle(fontSize: 16, color: Colors.black45),
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(height: 10),

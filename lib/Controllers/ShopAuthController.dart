@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:aabehayat_vendor/Models/ShopModel.dart';
 import 'package:aabehayat_vendor/Services/ShopAuthService.dart';
+import 'package:aabehayat_vendor/Utils/helper_functions.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -10,13 +11,12 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocoding/geocoding.dart' as geocoding;
 import 'package:location/location.dart' as loc;
 
-
-
 class ShopAuthController extends GetxController {
   final ShopService shopService = ShopService();
   final TextEditingController ownerNameController = TextEditingController();
   final TextEditingController shopNameController = TextEditingController();
-  final TextEditingController shopDescriptionController = TextEditingController();
+  final TextEditingController shopDescriptionController =
+      TextEditingController();
   final TextEditingController shopEmailController = TextEditingController();
   final TextEditingController shopPhoneController = TextEditingController();
   final TextEditingController totalGalonsController = TextEditingController();
@@ -33,15 +33,84 @@ class ShopAuthController extends GetxController {
   final RxBool mapLoading = true.obs;
   final Completer<GoogleMapController> mapController = Completer();
 
-
-
   @override
   void onInit() {
     super.onInit();
     fetchCurrentLocation();
   }
 
-  // Function to pick shop image 
+  //Function to check authtentication
+  Object authtentication(int registrationStep) {
+    // 1 step
+    if (registrationStep == 0) {
+      print(registrationStep);
+      // Checking name fields
+      if (ownerNameController.text.isEmpty || shopNameController.text.isEmpty) {
+        HelperFunctions.displayToastMessage('The Name Field can\'t be empty');
+        return false;
+      }
+      return true;
+    } else if (registrationStep == 1) {
+      print(registrationStep);
+      // checking email field
+      if (shopEmailController.text.isEmpty) {
+        HelperFunctions.displayToastMessage(
+            "The email you provide is not valid");
+        return false;
+      }
+      // checking phone number field
+      if (shopPhoneController.text.isEmpty) {
+        HelperFunctions.displayToastMessage(
+            "The Phone Number you provide is not valid");
+        return false;
+      }
+      return true;
+    } else if (registrationStep == 2) {
+      if (totalBottlesController.text.isEmpty ||
+          totalGalonsController.text.isEmpty) {
+        HelperFunctions.displayToastMessage('The Field can\'t be empty');
+        return false;
+      }
+      return true;
+    } else if (registrationStep == 3) {
+      if (shopImage.value == null) {
+        HelperFunctions.displayToastMessage('Provide Your Shop Image');
+        return false;
+      }
+      if (cnicFrontImage.value == null) {
+        HelperFunctions.displayToastMessage('Provide Your CNIC Front image');
+        return false;
+      }
+      if (cnicBackImage.value == null) {
+        HelperFunctions.displayToastMessage('Provide Your CNIC Back image');
+        return false;
+      }
+      return true;
+    } else if (registrationStep == 4) {
+      if (currentAddress.isEmpty) {
+        HelperFunctions.displayToastMessage('Provide Your CNIC Back image');
+        return false;
+      }
+      return true;
+    } else {
+      // checking delivery option
+      if (selectedDeliveryOptions.isEmpty) {
+        HelperFunctions.displayToastMessage(
+            'Select atlest 1 option to delivery');
+        return false;
+      }
+      // checking delivery time
+      if (deliveryTimes.isEmpty) {
+        HelperFunctions.displayToastMessage('Add shift to delivering water');
+        return false;
+      }
+      // login sueecessfully
+      HelperFunctions.displayToastMessage("Login Sueeced fully");
+      return true;
+    }
+  }
+
+  // Function to pick shop image
   Future<void> pickShopImage() async {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
@@ -77,8 +146,7 @@ class ShopAuthController extends GetxController {
     }
   }
 
-
-   Future<void> pickDeliveryTime() async {
+  Future<void> pickDeliveryTime() async {
     TimeOfDay? startTime = await showTimePicker(
       context: Get.context!,
       initialTime: TimeOfDay.now(),
@@ -96,7 +164,7 @@ class ShopAuthController extends GetxController {
     }
   }
 
-String formatTimeOfDay(TimeOfDay timeOfDay) {
+  String formatTimeOfDay(TimeOfDay timeOfDay) {
     final now = DateTime.now();
     final dateTime = DateTime(
       now.year,
@@ -108,79 +176,75 @@ String formatTimeOfDay(TimeOfDay timeOfDay) {
     return DateFormat('hh:mm a').format(dateTime);
   }
 
-  
+  Future<void> saveShopData() async {
+    try {
+      isLoading.value = true;
+      final shopFolder = "shops/${shopNameController.text.trim()}";
 
- Future<void> saveShopData() async {
-  try {
-    isLoading.value = true;
-    final shopFolder = "shops/${shopNameController.text.trim()}"; 
+      final shopImageResponse = await shopService.uploadImageToCloudinary(
+        File(shopImage.value!.path),
+        shopFolder,
+      );
+      final cnicFrontResponse = await shopService.uploadImageToCloudinary(
+        File(cnicFrontImage.value!.path),
+        shopFolder,
+      );
+      final cnicBackResponse = await shopService.uploadImageToCloudinary(
+        File(cnicBackImage.value!.path),
+        shopFolder,
+      );
 
-    final shopImageResponse = await shopService.uploadImageToCloudinary(
-      File(shopImage.value!.path),
-      shopFolder,
-    );
-    final cnicFrontResponse = await shopService.uploadImageToCloudinary(
-      File(cnicFrontImage.value!.path),
-      shopFolder,
-    );
-    final cnicBackResponse = await shopService.uploadImageToCloudinary(
-      File(cnicBackImage.value!.path),
-      shopFolder,
-    );
+      if (!shopImageResponse.isSuccess ||
+          !cnicFrontResponse.isSuccess ||
+          !cnicBackResponse.isSuccess) {
+        throw Exception("Failed to upload one or more images");
+      }
 
-    if (!shopImageResponse.isSuccess ||
-        !cnicFrontResponse.isSuccess ||
-        !cnicBackResponse.isSuccess) {
-      throw Exception("Failed to upload one or more images");
+      final shop = ShopModel(
+        shopId: DateTime.now().millisecondsSinceEpoch.toString(),
+        ownerName: ownerNameController.text,
+        shopName: shopNameController.text,
+        shopDescription: shopDescriptionController.text,
+        shopEmail: shopEmailController.text,
+        shopPhone: int.tryParse(shopPhoneController.text),
+        shopImage: shopImageResponse.data,
+        shopLocation: {
+          'shopAddress': currentAddress.value,
+          'latitude': currentLocation.value!.latitude,
+          'longitude': currentLocation.value!.longitude,
+        },
+        deliveryOptions: selectedDeliveryOptions,
+        deliveryTimes: deliveryTimes.map((time) {
+          return {
+            'start': formatTimeOfDay(time['start']!),
+            'end': formatTimeOfDay(time['end']!),
+          };
+        }).toList(),
+        ownerCnic: {
+          'cnicFront': cnicFrontResponse.data!,
+          'cnicBack': cnicBackResponse.data!,
+        },
+        totalGalons: int.tryParse(totalGalonsController.text),
+        totalBottles: int.tryParse(totalBottlesController.text),
+        accountApprove: false,
+        isCertified: false,
+        shopRating: 0.0,
+      );
+
+      final firestoreResponse = await shopService.saveShopToFirestore(shop);
+      if (!firestoreResponse.isSuccess) {
+        throw Exception(firestoreResponse.errorMessage);
+      }
+
+      Get.snackbar("Success", "Shop data saved successfully!");
+    } catch (e) {
+      Get.snackbar("Error", "An error occurred: $e");
+    } finally {
+      isLoading.value = false;
     }
-
-    final shop = ShopModel(
-      shopId: DateTime.now().millisecondsSinceEpoch.toString(),
-      ownerName: ownerNameController.text,
-      shopName: shopNameController.text,
-      shopDescription: shopDescriptionController.text,
-      shopEmail: shopEmailController.text,
-      shopPhone: int.tryParse(shopPhoneController.text),
-      shopImage: shopImageResponse.data,
-      shopLocation: {
-        'shopAddress': currentAddress.value,
-        'latitude': currentLocation.value!.latitude,
-        'longitude': currentLocation.value!.longitude,
-      },
-      deliveryOptions: selectedDeliveryOptions,
-      deliveryTimes: deliveryTimes.map((time) {
-        return {
-          'start': formatTimeOfDay(time['start']!),
-          'end': formatTimeOfDay(time['end']!),
-        };
-      }).toList(),
-      ownerCnic: {
-        'cnicFront': cnicFrontResponse.data!,
-        'cnicBack': cnicBackResponse.data!,
-      },
-      totalGalons: int.tryParse(totalGalonsController.text),
-      totalBottles: int.tryParse(totalBottlesController.text),
-      accountApprove: false,
-      isCertified: false,
-      shopRating: 0.0,
-    );
-
-    final firestoreResponse = await shopService.saveShopToFirestore(shop);
-    if (!firestoreResponse.isSuccess) {
-      throw Exception(firestoreResponse.errorMessage);
-    }
-
-    Get.snackbar("Success", "Shop data saved successfully!");
-  } catch (e) {
-    Get.snackbar("Error", "An error occurred: $e");
-  } finally {
-    isLoading.value = false;
   }
-}
 
-
-
-Future<void> fetchCurrentLocation() async {
+  Future<void> fetchCurrentLocation() async {
     try {
       mapLoading.value = true;
 
@@ -211,7 +275,8 @@ Future<void> fetchCurrentLocation() async {
       // Move camera to current location
       if (mapController.isCompleted) {
         final GoogleMapController controller = await mapController.future;
-        controller.animateCamera(CameraUpdate.newLatLng(currentLocation.value!));
+        controller
+            .animateCamera(CameraUpdate.newLatLng(currentLocation.value!));
       }
     } catch (e) {
       Get.snackbar("Error", "Unable to fetch location: $e");
@@ -223,7 +288,8 @@ Future<void> fetchCurrentLocation() async {
   Future<void> fetchAddressFromCoordinates() async {
     if (currentLocation.value != null) {
       try {
-        List<geocoding.Placemark> placemarks = await geocoding.placemarkFromCoordinates(
+        List<geocoding.Placemark> placemarks =
+            await geocoding.placemarkFromCoordinates(
           currentLocation.value!.latitude,
           currentLocation.value!.longitude,
         );
@@ -246,26 +312,22 @@ Future<void> fetchCurrentLocation() async {
     fetchAddressFromCoordinates();
   }
 
-
-void clearData() {
-  ownerNameController.clear();
-  shopNameController.clear();
-  shopDescriptionController.clear();
-  shopEmailController.clear();
-  shopPhoneController.clear();
-  totalGalonsController.clear();
-  totalBottlesController.clear();
-  shopImage.value = null;
-  cnicFrontImage.value = null;
-  cnicBackImage.value = null;
-  selectedDeliveryOptions.clear();
-  deliveryTimes.clear();
-  isLoading.value = false;
-  currentLocation.value = null;
-  currentAddress.value = 'Fetching address...';
-  mapLoading.value = true;
-}
-
-  
-
+  void clearData() {
+    ownerNameController.clear();
+    shopNameController.clear();
+    shopDescriptionController.clear();
+    shopEmailController.clear();
+    shopPhoneController.clear();
+    totalGalonsController.clear();
+    totalBottlesController.clear();
+    shopImage.value = null;
+    cnicFrontImage.value = null;
+    cnicBackImage.value = null;
+    selectedDeliveryOptions.clear();
+    deliveryTimes.clear();
+    isLoading.value = false;
+    currentLocation.value = null;
+    currentAddress.value = 'Fetching address...';
+    mapLoading.value = true;
+  }
 }
