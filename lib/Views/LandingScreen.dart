@@ -69,7 +69,7 @@ class _LandingScreenState extends State<LandingScreen> {
                         style: GoogleFonts.poppins(
                           fontSize: 40,
                           fontWeight: FontWeight.w700,
-                          color: Colors.blue.shade800,
+                          color: kPrimaryColor,
                         ),
                       ),
                       Text(
@@ -139,7 +139,7 @@ class _LandingScreenState extends State<LandingScreen> {
                         onPressed: () => Get.to(() => OnBoardingScreens()),
                         style: ElevatedButton.styleFrom(
                           elevation: 0,
-                          backgroundColor: Colors.blue.shade800,
+                          backgroundColor: kPrimaryColor,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -154,20 +154,16 @@ class _LandingScreenState extends State<LandingScreen> {
                       ),
                       SizedBox(height: 15),
                       OutlinedButton(
-//              onPressed: () => Get.to(
-//   OnBoardingScreens(),
-//   transition: Transition.cupertino, // iOS-style smooth transition
-//   duration: Duration(milliseconds: 700),
-// ),
-                        onPressed: () => Get.to(
+
+                        onPressed: () => Get.to(()=>
                           OnBoardingScreens(),
-                          transition: Transition.fadeIn, // Smooth fade effect
+                          transition: Transition.rightToLeft, // Smooth fade effect
                           duration: Duration(milliseconds: 500),
                         ),
 
                         style: OutlinedButton.styleFrom(
                           elevation: 0,
-                          side: BorderSide(color: Colors.blue.shade800),
+                          side: BorderSide(color: kPrimaryColor),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -177,7 +173,7 @@ class _LandingScreenState extends State<LandingScreen> {
                           child: Text(
                             "Sign Up",
                             style: TextStyle(
-                                fontSize: 18, color: Colors.blue.shade800),
+                                fontSize: 18, color: kPrimaryColor),
                           ),
                         ),
                       ),

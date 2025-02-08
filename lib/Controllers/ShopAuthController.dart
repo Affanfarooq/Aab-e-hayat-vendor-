@@ -39,56 +39,61 @@ class ShopAuthController extends GetxController {
     fetchCurrentLocation();
   }
 
-  //Function to check authtentication
-  Object authtentication(int registrationStep) {
-    // 1 step
+  Object authtentication(int registrationStep, BuildContext context) {
     if (registrationStep == 0) {
       print(registrationStep);
-      // Checking name fields
-      if (ownerNameController.text.isEmpty || shopNameController.text.isEmpty) {
-        HelperFunctions.displayToastMessage('The Name Field can\'t be empty');
+      if (ownerNameController.text.isEmpty) {
+        HelperFunctions.displayToastMessage('Owner Name','Please provide shop owner name',context);
+        return false;
+      }
+       if (shopNameController.text.isEmpty) {
+        HelperFunctions.displayToastMessage('Shop Name','Shop Name Field can\'t be empty',context);
         return false;
       }
       return true;
-    } else if (registrationStep == 1) {
+    } 
+    
+    
+    
+     else if (registrationStep == 1) {
       print(registrationStep);
       // checking email field
       if (shopEmailController.text.isEmpty) {
         HelperFunctions.displayToastMessage(
-            "The email you provide is not valid");
+            'Email Address',"The email you provide is not valid",context);
         return false;
       }
       // checking phone number field
       if (shopPhoneController.text.isEmpty) {
         HelperFunctions.displayToastMessage(
-            "The Phone Number you provide is not valid");
+            "Phone Number","The Phone Number you provide is not valid",context);
         return false;
       }
       return true;
     } else if (registrationStep == 2) {
       if (totalBottlesController.text.isEmpty ||
           totalGalonsController.text.isEmpty) {
-        HelperFunctions.displayToastMessage('The Field can\'t be empty');
+        HelperFunctions.displayToastMessage("Quantity",'The Field can\'t be empty',context);
         return false;
       }
       return true;
     } else if (registrationStep == 3) {
       if (shopImage.value == null) {
-        HelperFunctions.displayToastMessage('Provide Your Shop Image');
+        HelperFunctions.displayToastMessage('Shop Image','Provide Your Shop Image',context);
         return false;
       }
       if (cnicFrontImage.value == null) {
-        HelperFunctions.displayToastMessage('Provide Your CNIC Front image');
+        HelperFunctions.displayToastMessage('CNIC Front Image','Provide Your CNIC Front image',context);
         return false;
       }
       if (cnicBackImage.value == null) {
-        HelperFunctions.displayToastMessage('Provide Your CNIC Back image');
+        HelperFunctions.displayToastMessage('CNIC Back Image','Provide Your CNIC Back image',context);
         return false;
       }
       return true;
     } else if (registrationStep == 4) {
       if (currentAddress.isEmpty) {
-        HelperFunctions.displayToastMessage('Provide Your CNIC Back image');
+        HelperFunctions.displayToastMessage('Shop Address','Provide Your Shop Address',context);
         return false;
       }
       return true;
@@ -96,18 +101,24 @@ class ShopAuthController extends GetxController {
       // checking delivery option
       if (selectedDeliveryOptions.isEmpty) {
         HelperFunctions.displayToastMessage(
-            'Select atlest 1 option to delivery');
+            'Delivery Days','Select your delivery days',context);
         return false;
       }
       // checking delivery time
       if (deliveryTimes.isEmpty) {
-        HelperFunctions.displayToastMessage('Add shift to delivering water');
+        HelperFunctions.displayToastMessage('Delivery Timings','Add shift to delivering water',context);
         return false;
       }
-      // login sueecessfully
-      HelperFunctions.displayToastMessage("Login Sueeced fully");
+      
+      
+
+
+      saveShopData();
       return true;
     }
+
+
+
   }
 
   // Function to pick shop image

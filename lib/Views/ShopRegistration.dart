@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:aabehayat_vendor/Const/design_const.dart';
 import 'package:aabehayat_vendor/Controllers/ShopAuthController.dart';
-import 'package:aabehayat_vendor/GenericWidgets/CustomButton.dart';
 import 'package:aabehayat_vendor/GenericWidgets/textfield/app_text_form_field.dart';
 import 'package:aabehayat_vendor/utils/screen_helper.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -60,13 +59,14 @@ class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
                   onPressed: () {
                     print(_currentStep);
                     var authenticate =
-                        shopController.authtentication(_currentStep.value);
+                        shopController.authtentication(_currentStep.value,context);
                     if (authenticate == true) {
                       _pageController.nextPage(
                         duration: const Duration(milliseconds: 300),
                         curve: Curves.easeInOut,
                       );
                     }
+                
                   },
                   shape: CircleBorder(),
                   backgroundColor: kPrimaryColor,
@@ -79,7 +79,7 @@ class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
                 child: FloatingActionButton(
                   elevation: 0,
                   onPressed: () {
-                    shopController.authtentication(6);
+                    shopController.authtentication(6,context);
                   },
                   backgroundColor: Colors.green.shade600,
                   shape: CircleBorder(),
@@ -116,7 +116,7 @@ class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
                 ),
                 Obx(() => Padding(
                       padding: const EdgeInsets.only(
-                          left: 15, right: 15, top: 20, bottom: 20),
+                          left: 15, right: 15, top: 20, bottom: 40),
                       child: _buildCustomProgressIndicator(),
                     )),
                 Expanded(
@@ -127,7 +127,7 @@ class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
                     children: [
                       _buildStep(
                           "Basic Information",
-                          "Please provide the basic details of your shop.",
+                          "Please provide the basic details of your business.",
                           _buildBasicInformationForm()),
                       _buildStep(
                           "Contact Information",
@@ -152,51 +152,7 @@ class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
                     ],
                   ),
                 ),
-                // Obx(
-                //   () => Padding(
-                //     padding: const EdgeInsets.all(8.0),
-                //     child: Row(
-                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //       children: [
-                //         if (_currentStep.value > 0)
-                //           Expanded(
-                //             child: Padding(
-                //               padding: const EdgeInsets.only(right: 10),
-                //               child: CustomSpringButton(
-                //                 onPressed: () {
-                //                   _pageController.previousPage(
-                //                     duration: const Duration(milliseconds: 300),
-                //                     curve: Curves.easeInOut,
-                //                   );
-                //                 },
-                //                 text: "Back",
-                //               ),
-                //             ),
-                //           ),
-                //         if (_currentStep.value < _totalSteps - 1)
-                //           Expanded(
-                //             child: CustomSpringButton(
-                //               onPressed: () {
-                //                 _pageController.nextPage(
-                //                   duration: const Duration(milliseconds: 300),
-                //                   curve: Curves.easeInOut,
-                //                 );
-                //               },
-                //               text: "Next",
-                //             ),
-                //           ),
-                //         if (_currentStep.value == _totalSteps - 1)
-                //           Expanded(
-                //             child: CustomSpringButton(
-                //               onPressed: shopController.saveShopData,
-                //               text: "Submit",
-                //             ),
-                //           ),
-                //       ],
-                //     ),
-                //   ),
-                // )
-              ],
+             ],
             ),
           ),
         ],
@@ -205,37 +161,34 @@ class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
   }
 
   Widget _buildStep(String heading, String description, Widget content) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          heading != "Your Shop Location"
-              ? Column(
-                  children: [
-                    Text(
-                      heading,
-                      style: TextStyle(
-                          fontSize: 19,
-                          fontWeight: FontWeight.bold,
-                          color: kLightGreyTextColor),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      description,
-                      style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: kLightGreyTextColor),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 10),
-                  ],
-                )
-              : SizedBox(),
-          content,
-        ],
-      ),
+    return Column(
+
+      children: [
+        heading != "Your Shop Location"
+            ? Column(
+                children: [
+                  Text(
+                    heading,
+                    style: TextStyle(
+                        fontSize: 19,
+                        fontWeight: FontWeight.bold,
+                        color: kPrimaryColor),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    description,
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: kPrimaryColor),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 10),
+                ],
+              )
+            : SizedBox(),
+        content,
+      ],
     );
   }
 

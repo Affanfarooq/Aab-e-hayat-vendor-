@@ -23,7 +23,7 @@ class AppTextField extends StatelessWidget {
       keyboardType: keyboardType,
       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: TextStyle(color: Colors.grey[600]),
+        hintStyle: TextStyle(color: kTextFieldHintColor),
         filled: true,
         fillColor: Colors.white,
         border: OutlineInputBorder(

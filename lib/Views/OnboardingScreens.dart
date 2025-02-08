@@ -66,9 +66,13 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
                 padding: const EdgeInsets.only(right: 20.0),
                 child: FloatingActionButton(
                   elevation: 0,
-                  onPressed: () {
-                    Get.to(()=>ShopRegistrationScreen());
-                  },
+             
+                      onPressed: () => Get.to(()=>
+                          ShopRegistrationScreen(),
+                          transition: Transition.rightToLeft, 
+                          duration: Duration(milliseconds: 500),
+                        ),
+                  
                   backgroundColor: Colors.green.shade600,
                   shape: CircleBorder(),
                   child: Icon(Icons.check, color: Colors.white),
