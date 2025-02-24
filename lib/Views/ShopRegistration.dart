@@ -116,7 +116,7 @@ class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
                 ),
                 Obx(() => Padding(
                       padding: const EdgeInsets.only(
-                          left: 15, right: 15, top: 20, bottom: 40),
+                          left: 15, right: 15, top: 20, bottom: 10),
                       child: _buildCustomProgressIndicator(),
                     )),
                 Expanded(
@@ -144,7 +144,8 @@ class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
                       _buildStep(
                           "Your Shop Location",
                           "Select the location of your shop on the map.",
-                          _buildLocationForm()),
+                          _buildLocationForm()
+                          ),
                       _buildStep(
                           "Delivery Schedule",
                           "Select your delivery days and add delivery times.",
@@ -165,28 +166,31 @@ class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
 
       children: [
         heading != "Your Shop Location"
-            ? Column(
-                children: [
-                  Text(
-                    heading,
-                    style: TextStyle(
-                        fontSize: 19,
-                        fontWeight: FontWeight.bold,
-                        color: kPrimaryColor),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    description,
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: kPrimaryColor),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 10),
-                ],
-              )
-            : SizedBox(),
+            ? Padding(
+              padding: const EdgeInsets.only(top: 20,left: 10,right: 10),
+              child: Column(
+                  children: [
+                    Text(
+                      heading,
+                      style: TextStyle(
+                          fontSize: 19,
+                          fontWeight: FontWeight.bold,
+                          color: kPrimaryColor),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      description,
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: kPrimaryColor),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 10),
+                  ],
+                ),
+            )
+            : SizedBox.shrink(),
         content,
       ],
     );
@@ -515,10 +519,12 @@ class _ShopRegistrationScreenState extends State<ShopRegistrationScreen> {
           Obx(() {
             return ListView.builder(
               shrinkWrap: true,
+              padding: EdgeInsets.zero,
               itemCount: shopController.deliveryTimes.length,
               itemBuilder: (context, index) {
                 final time = shopController.deliveryTimes[index];
                 return ListTile(
+                  contentPadding: EdgeInsets.zero,
                   title: Text(
                       "From: ${shopController.formatTimeOfDay(time['start']!)} - To: ${shopController.formatTimeOfDay(time['end']!)}"),
                   trailing: IconButton(

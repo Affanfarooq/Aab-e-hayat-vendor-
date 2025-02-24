@@ -6,14 +6,13 @@ class ShopModel {
   final String? shopEmail;
   final int? shopPhone;
   final String? shopImage;
-  final Map<String, dynamic>? shopLocation;
+  final ShopLocation? shopLocation;
   final List<String>? deliveryOptions;
-  final List<Map<String, String>>? deliveryTimes; 
-  final Map<String, String>? ownerCnic;
+  final List<DeliveryTime>? deliveryTimes;
+  final OwnerCnic? ownerCnic;
   final bool? accountApprove;
   final bool? isCertified;
-  final int? totalGalons;
-  final int? totalBottles;
+  final Bottles? bottles;
   final double? shopRating;
 
   ShopModel({
@@ -30,8 +29,7 @@ class ShopModel {
     this.ownerCnic,
     this.accountApprove,
     this.isCertified,
-    this.totalGalons,
-    this.totalBottles,
+    this.bottles,
     this.shopRating,
   });
 
@@ -45,32 +43,23 @@ class ShopModel {
       shopPhone: json['shopPhone'] ?? 0,
       shopImage: json['shopImage'] ?? "",
       shopLocation: json['shopLocation'] != null
-          ? {
-              'shopAddress': json['shopAddress'],
-              'latitude': json['latitude'],
-              'longitude': json['longitude'],
-            }
+          ? ShopLocation.fromJson(json['shopLocation'])
           : null,
       deliveryOptions: json['deliveryOptions'] != null
           ? List<String>.from(json['deliveryOptions'])
           : null,
       deliveryTimes: json['deliveryTimes'] != null
-          ? List<Map<String, String>>.from(json['deliveryTimes'].map((time) => {
-                'start': time['start'],
-                'end': time['end'],
-              }))
+          ? List<DeliveryTime>.from(json['deliveryTimes']
+              .map((time) => DeliveryTime.fromJson(time)))
           : null,
       ownerCnic: json['ownerCnic'] != null
-          ? {
-              'cnicFront': json['ownerCnic']['cnicFront'],
-              'cnicBack': json['ownerCnic']['cnicBack'],
-            }
+          ? OwnerCnic.fromJson(json['ownerCnic'])
           : null,
       accountApprove: json['accountApprove'] ?? false,
       isCertified: json['isCertified'] ?? false,
-      totalGalons: json['totalGalons'] ?? 0,
-      totalBottles: json['totalBottles'] ?? 0,
-      shopRating: json['shopRating'] ?? 0.0,
+      bottles:
+          json['bottles'] != null ? Bottles.fromJson(json['bottles']) : null,
+      shopRating: json['shopRating']?.toDouble() ?? 0.0,
     );
   }
 
@@ -83,29 +72,109 @@ class ShopModel {
       'shopEmail': shopEmail,
       'shopPhone': shopPhone,
       'shopImage': shopImage,
-      'shopLocation': shopLocation != null
-          ? {
-              'shopAddress': shopLocation!['shopAddress'],
-              'latitude': shopLocation!['latitude'],
-              'longitude': shopLocation!['longitude'],
-            }
-          : null,
+      'shopLocation': shopLocation?.toJson(),
       'deliveryOptions': deliveryOptions,
-      'deliveryTimes': deliveryTimes?.map((time) => {
-                'start': time['start'],
-                'end': time['end'],
-              }).toList(),
-      'ownerCnic': ownerCnic != null
-          ? {
-              'cnicFront': ownerCnic!['cnicFront'],
-              'cnicBack': ownerCnic!['cnicBack'],
-            }
-          : null,
+      'deliveryTimes': deliveryTimes?.map((time) => time.toJson()).toList(),
+      'ownerCnic': ownerCnic?.toJson(),
       'accountApprove': accountApprove,
       'isCertified': isCertified,
-      'totalGalons': totalGalons,
-      'totalBottles': totalBottles,
+      'bottles': bottles?.toJson(),
       'shopRating': shopRating,
+    };
+  }
+}
+
+/// **Shop Location Model**
+class ShopLocation {
+  final String? shopAddress;
+  final double? latitude;
+  final double? longitude;
+
+  ShopLocation({this.shopAddress, this.latitude, this.longitude});
+
+  factory ShopLocation.fromJson(Map<String, dynamic> json) {
+    return ShopLocation(
+      shopAddress: json['shopAddress'] ?? "",
+      latitude: json['latitude']?.toDouble() ?? 0.0,
+      longitude: json['longitude']?.toDouble() ?? 0.0,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'shopAddress': shopAddress,
+      'latitude': latitude,
+      'longitude': longitude,
+    };
+  }
+}
+
+class DeliveryTime {
+  final String? start;
+  final String? end;
+
+  DeliveryTime({this.start, this.end});
+
+  factory DeliveryTime.fromJson(Map<String, dynamic> json) {
+    return DeliveryTime(
+      start: json['start'] ?? "",
+      end: json['end'] ?? "",
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'start': start,
+      'end': end,
+    };
+  }
+}
+
+class OwnerCnic {
+  final String? cnicFront;
+  final String? cnicBack;
+
+  OwnerCnic({this.cnicFront, this.cnicBack});
+
+  factory OwnerCnic.fromJson(Map<String, dynamic> json) {
+    return OwnerCnic(
+      cnicFront: json['cnicFront'] ?? "",
+      cnicBack: json['cnicBack'] ?? "",
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'cnicFront': cnicFront,
+      'cnicBack': cnicBack,
+    };
+  }
+}
+
+/// **Bottles Model**
+class Bottles {
+  final int? totalGalons;
+  final double? galonPrice;
+  final int? totalBottles;
+  final double? bottlePrice;
+
+  Bottles({this.totalGalons, this.galonPrice, this.totalBottles, this.bottlePrice});
+
+  factory Bottles.fromJson(Map<String, dynamic> json) {
+    return Bottles(
+      totalGalons: json['totalGalons'] ?? 0,
+      galonPrice: json['galonPrice']?.toDouble() ?? 0.0,
+      totalBottles: json['totalBottles'] ?? 0,
+      bottlePrice: json['bottlePrice']?.toDouble() ?? 0.0,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'totalGalons': totalGalons,
+      'galonPrice': galonPrice,
+      'totalBottles': totalBottles,
+      'bottlePrice': bottlePrice,
     };
   }
 }

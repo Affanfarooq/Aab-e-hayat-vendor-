@@ -15,12 +15,14 @@ class ShopAuthController extends GetxController {
   final ShopService shopService = ShopService();
   final TextEditingController ownerNameController = TextEditingController();
   final TextEditingController shopNameController = TextEditingController();
-  final TextEditingController shopDescriptionController =
-      TextEditingController();
+  final TextEditingController shopDescriptionController = TextEditingController();
   final TextEditingController shopEmailController = TextEditingController();
   final TextEditingController shopPhoneController = TextEditingController();
   final TextEditingController totalGalonsController = TextEditingController();
+  final TextEditingController galonPriceController = TextEditingController();
   final TextEditingController totalBottlesController = TextEditingController();
+  final TextEditingController bottlePriceController = TextEditingController();
+
   RxList<String> selectedDeliveryOptions = <String>[].obs;
   Rx<XFile?> shopImage = Rx<XFile?>(null);
   Rx<XFile?> cnicFrontImage = Rx<XFile?>(null);
@@ -109,9 +111,6 @@ class ShopAuthController extends GetxController {
         HelperFunctions.displayToastMessage('Delivery Timings','Add shift to delivering water',context);
         return false;
       }
-      
-      
-
 
       saveShopData();
       return true;
@@ -187,73 +186,77 @@ class ShopAuthController extends GetxController {
     return DateFormat('hh:mm a').format(dateTime);
   }
 
-  Future<void> saveShopData() async {
-    try {
-      isLoading.value = true;
-      final shopFolder = "shops/${shopNameController.text.trim()}";
+Future<void> saveShopData() async {
+  try {
+    isLoading.value = true;
+    final shopFolder = "shops/${shopNameController.text.trim()}";
 
-      final shopImageResponse = await shopService.uploadImageToCloudinary(
-        File(shopImage.value!.path),
-        shopFolder,
-      );
-      final cnicFrontResponse = await shopService.uploadImageToCloudinary(
-        File(cnicFrontImage.value!.path),
-        shopFolder,
-      );
-      final cnicBackResponse = await shopService.uploadImageToCloudinary(
-        File(cnicBackImage.value!.path),
-        shopFolder,
-      );
+    final shopImageResponse = await shopService.uploadImageToCloudinary(
+      File(shopImage.value!.path),
+      shopFolder,
+    );
+    final cnicFrontResponse = await shopService.uploadImageToCloudinary(
+      File(cnicFrontImage.value!.path),
+      shopFolder,
+    );
+    final cnicBackResponse = await shopService.uploadImageToCloudinary(
+      File(cnicBackImage.value!.path),
+      shopFolder,
+    );
 
-      if (!shopImageResponse.isSuccess ||
-          !cnicFrontResponse.isSuccess ||
-          !cnicBackResponse.isSuccess) {
-        throw Exception("Failed to upload one or more images");
-      }
+    if (!shopImageResponse.isSuccess ||
+        !cnicFrontResponse.isSuccess ||
+        !cnicBackResponse.isSuccess) {
+      throw Exception("Failed to upload one or more images");
+    }
 
-      final shop = ShopModel(
-        shopId: DateTime.now().millisecondsSinceEpoch.toString(),
-        ownerName: ownerNameController.text,
-        shopName: shopNameController.text,
-        shopDescription: shopDescriptionController.text,
-        shopEmail: shopEmailController.text,
-        shopPhone: int.tryParse(shopPhoneController.text),
-        shopImage: shopImageResponse.data,
-        shopLocation: {
-          'shopAddress': currentAddress.value,
-          'latitude': currentLocation.value!.latitude,
-          'longitude': currentLocation.value!.longitude,
-        },
-        deliveryOptions: selectedDeliveryOptions,
-        deliveryTimes: deliveryTimes.map((time) {
-          return {
-            'start': formatTimeOfDay(time['start']!),
-            'end': formatTimeOfDay(time['end']!),
-          };
-        }).toList(),
-        ownerCnic: {
-          'cnicFront': cnicFrontResponse.data!,
-          'cnicBack': cnicBackResponse.data!,
-        },
+    final shop = ShopModel(
+      shopId: DateTime.now().millisecondsSinceEpoch.toString(),
+      ownerName: ownerNameController.text.trim(),
+      shopName: shopNameController.text.trim(),
+      shopDescription: shopDescriptionController.text.trim(),
+      shopEmail: shopEmailController.text.trim(),
+      shopPhone: int.tryParse(shopPhoneController.text),
+      shopImage: shopImageResponse.data,
+      shopLocation: ShopLocation(
+        shopAddress: currentAddress.value,
+        latitude: currentLocation.value?.latitude,
+        longitude: currentLocation.value?.longitude,
+      ),
+      deliveryOptions: selectedDeliveryOptions,
+      deliveryTimes: deliveryTimes.map((time) {
+        return DeliveryTime(
+          start: formatTimeOfDay(time['start']!),
+          end: formatTimeOfDay(time['end']!),
+        );
+      }).toList(),
+      ownerCnic: OwnerCnic(
+        cnicFront: cnicFrontResponse.data!,
+        cnicBack: cnicBackResponse.data!,
+      ),
+      bottles: Bottles(
         totalGalons: int.tryParse(totalGalonsController.text),
         totalBottles: int.tryParse(totalBottlesController.text),
-        accountApprove: false,
-        isCertified: false,
-        shopRating: 0.0,
-      );
+        galonPrice: double.tryParse(galonPriceController.text),
+        bottlePrice: double.tryParse(bottlePriceController.text),
+      ),
+      accountApprove: false,
+      isCertified: false,
+      shopRating: 0.0,
+    );
 
-      final firestoreResponse = await shopService.saveShopToFirestore(shop);
-      if (!firestoreResponse.isSuccess) {
-        throw Exception(firestoreResponse.errorMessage);
-      }
-
-      Get.snackbar("Success", "Shop data saved successfully!");
-    } catch (e) {
-      Get.snackbar("Error", "An error occurred: $e");
-    } finally {
-      isLoading.value = false;
+    final firestoreResponse = await shopService.saveShopToFirestore(shop);
+    if (!firestoreResponse.isSuccess) {
+      throw Exception(firestoreResponse.errorMessage);
     }
+
+    Get.snackbar("Success", "Shop data saved successfully!");
+  } catch (e) {
+    Get.snackbar("Error", "An error occurred: $e");
+  } finally {
+    isLoading.value = false;
   }
+}
 
   Future<void> fetchCurrentLocation() async {
     try {
