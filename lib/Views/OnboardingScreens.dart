@@ -1,11 +1,11 @@
-import 'dart:ui' as ui;
 import 'package:aabehayat_vendor/Const/design_const.dart';
+import 'package:aabehayat_vendor/GenericWidgets/CustomButton.dart';
+import 'package:aabehayat_vendor/GenericWidgets/SpringWidget.dart';
 import 'package:aabehayat_vendor/Views/ShopRegistration.dart';
-import 'package:aabehayat_vendor/utils/screen_helper.dart';
+import 'package:aabehayat_vendor/Views/WaveAnimation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
-import '../GenericWidgets/CustomDesign/circle_design.dart';
 
 class OnBoardingScreens extends StatefulWidget {
   const OnBoardingScreens({super.key});
@@ -16,114 +16,142 @@ class OnBoardingScreens extends StatefulWidget {
 
 class _OnBoardingScreensState extends State<OnBoardingScreens> {
   final PageController _pageController = PageController();
-  final int _totalSteps = 3;
+  final int _totalSteps = 4; // Updated total steps
   final RxInt _currentStep = 0.obs;
 
   @override
   Widget build(BuildContext context) {
-    double width = ScreenHelper.getScreenWidth(context);
-    double height = ScreenHelper.getScreenHeight(context);
     return Scaffold(
-      floatingActionButton: Obx(
-        () => Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            if (_currentStep.value > 0)
-              Padding(
-                padding: const EdgeInsets.only(left: 20.0),
-                child: FloatingActionButton(
-                  elevation: 0,
-                  onPressed: () {
-                    _pageController.previousPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                    );
-                  },
-                  backgroundColor: kPrimaryColor,
-                  shape: CircleBorder(),
-                  child: Icon(Icons.arrow_back, color: Colors.white),
-                ),
-              ),
-            SizedBox(width: 10),
-            if (_currentStep.value < _totalSteps - 1)
-              Padding(
-                padding: const EdgeInsets.only(right: 20.0),
-                child: FloatingActionButton(
-                  elevation: 0,
-                  onPressed: () {
-                    _pageController.nextPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                    );
-                  },
-                  shape: CircleBorder(),
-                  backgroundColor: kPrimaryColor,
-                  child: Icon(Icons.arrow_forward, color: Colors.white),
-                ),
-              ),
-            if (_currentStep.value == _totalSteps - 1)
-              Padding(
-                padding: const EdgeInsets.only(right: 20.0),
-                child: FloatingActionButton(
-                  elevation: 0,
-             
-                      onPressed: () => Get.to(()=>
-                          ShopRegistrationScreen(),
-                          transition: Transition.rightToLeft, 
-                          duration: Duration(milliseconds: 500),
-                        ),
-                  
-                  backgroundColor: Colors.green.shade600,
-                  shape: CircleBorder(),
-                  child: Icon(Icons.check, color: Colors.white),
-                ),
-              ),
-          ],
-        ),
-      ),
       body: Stack(
         alignment: Alignment.topRight,
         children: [
-          CustomPaint(
-            size: ui.Size(width, (height * 0.7665350318471338).toDouble()),
-            painter: CircleDesign(),
-          ),
+          WaveAnimationScreen(currentStep: _currentStep),
           SafeArea(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Expanded(
                   flex: 3,
-                  child: PageView(
-                    controller: _pageController,
-                    physics: const NeverScrollableScrollPhysics(),
-                    onPageChanged: (index) => _currentStep.value = index,
+                  child: Stack(
                     children: [
-                      _buildStep(
-                        "Effortless Water Delivery",
-                        "Track all your deliveries and payments in one place, reducing the hassle and time spent on manual work. Now everything is automated and organized by aabehayat!",
-                        "Animation6.json",
+                      PageView(
+                        controller: _pageController,
+                        physics: const NeverScrollableScrollPhysics(),
+                        onPageChanged: (index) => _currentStep.value = index,
+                        children: [
+                          _buildIntroScreen(),
+                          _buildStep(
+                              "Effortless Water Delivery",
+                              "Track all your deliveries and payments in one place, reducing the hassle and time spent on manual work. Now everything is automated and organized by AABEHAYAT!",
+                              "onboarding1.svg",
+                              250),
+                          _buildStep(
+                              "Increase Your Shop's Reach",
+                              "By joining our platform, your shop will be visible to more customers within a 5km radius of your shop, helping you to expand your business.",
+                              "onboarding2.svg",
+                              210),
+                          _buildStep(
+                              "Boost Your Revenue",
+                              "Providing your excellent service and maintaining high ratings will increase your shop’s reach, attracting more customers. You can also boost your shop to get even more visibility.",
+                              "onboarding3.svg",
+                              210),
+                        ],
                       ),
-                      _buildStep(
-                        "Increase Your Shop's Reach",
-                        "By joining our platform, your shop will be visible to more customers within a 5km radius of your shop, helping you to expand your business.",
-                        "Animation4.json",
-                      ),
-                      _buildStep(
-                        "Boost Your Revenue",
-                        "Providing your excellent service and maintaining high ratings will increase your shop’s reach, attracting more customers. You can also boost your shop to get even more visibility.",
-                        "Animation7.json",
+                      Positioned(
+                        bottom: 120,
+                        left: 0,
+                        right: 0,
+                        child: Obx(
+                          () => _currentStep.value >
+                                  0 
+                              ? CustomProgressIndicator(
+                                  totalSteps: _totalSteps -
+                                      1, 
+                                  currentStep: _currentStep.value -
+                                      1,
+                                )
+                              : SizedBox(), 
+                        ),
                       ),
                     ],
                   ),
                 ),
-                Expanded(
-                  flex: 1,
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 50),
-                    child: _buildCustomProgressIndicator(),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Obx(() => Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // Back button (Show only on second and last steps)
+                            if (_currentStep.value > 0)
+                              Expanded(
+                                child: SpringWidget(
+                                  onTap: () {
+                                    _pageController.previousPage(
+                                      duration:
+                                          const Duration(milliseconds: 300),
+                                      curve: Curves.easeInOut,
+                                    );
+                                  },
+                                  child: CustomButton(
+                                    title: "Back",
+                                    color: Colors.white,
+                                    height: 50,
+                                    radius: 10,
+                                    fontWeight: FontWeight.bold,
+                                    textSize: 16,
+                                  ),
+                                ),
+                              ),
+
+                            Expanded(
+                              child: Padding(
+                                padding: _currentStep.value > 0
+                                    ? const EdgeInsets.only(left: 10)
+                                    : EdgeInsets.zero,
+                                child: SpringWidget(
+                                  onTap: () {
+                                    if (_currentStep.value == 0) {
+                                      _pageController.nextPage(
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        curve: Curves.easeInOut,
+                                      );
+                                    } else if (_currentStep.value <
+                                        _totalSteps - 1) {
+                                      _pageController.nextPage(
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        curve: Curves.easeInOut,
+                                      );
+                                    } else {
+                                      Get.to(() => ShopRegistrationScreen(),
+                                          transition: Transition.rightToLeft,
+                                          duration: const Duration(
+                                              milliseconds: 500));
+                                    }
+                                  },
+                                  child: CustomButton(
+                                    title: _currentStep.value == 0
+                                        ? "Get Started"
+                                        : (_currentStep.value == _totalSteps - 1
+                                            ? "Continue"
+                                            : "Next"),
+                                    color: Colors.white,
+                                    height: 50,
+                                    radius: 10,
+                                    fontWeight: FontWeight.bold,
+                                    textSize: 16,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        )),
                   ),
                 ),
+                SizedBox(height: 50),
               ],
             ),
           ),
@@ -132,7 +160,46 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
     );
   }
 
-  Widget _buildStep(String heading, String description, String image) {
+  // New first screen with logo
+  Widget _buildIntroScreen() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            children: [
+              SizedBox(height: 130),
+              SvgPicture.asset('assets/images/splash.svg', height: 130),
+              SizedBox(height: 20),
+              Text(
+                "AABEHAYAT",
+                style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black),
+              ),
+              Text(
+                "Aapki zarrorat hamari zimydari",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 17, color: Colors.grey,fontWeight: FontWeight.w600),
+              ),
+            ],
+          ),
+           Padding(
+             padding: const EdgeInsets.symmetric(horizontal: 40,),
+             child: Text(
+                  "Managing your water supply, made easy.",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 20, color: Colors.white,fontWeight: FontWeight.w600),
+                ),
+           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStep(
+      String heading, String description, String image, double imageSize) {
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -140,26 +207,21 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Lottie.asset(
+            SvgPicture.asset(
               'assets/images/$image',
-              height: 320,
+              height: imageSize,
               fit: BoxFit.cover,
             ),
-            image!='Animation7.json'?const SizedBox(height: 20):const SizedBox(height: 0),
+            SizedBox(height: 50),
             Text(
               heading,
               style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: kTextColor),
+                  fontSize: 18, fontWeight: FontWeight.bold, color: kTextColor),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 15),
             Text(
               description,
-              style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: kLightGreyTextColor),
+              style: const TextStyle(fontSize: 16, color: kLightGreyTextColor),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 50),
@@ -168,26 +230,34 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
       ),
     );
   }
+}
 
-  Widget _buildCustomProgressIndicator() {
+class CustomProgressIndicator extends StatelessWidget {
+  final int totalSteps;
+  final int currentStep;
+
+  const CustomProgressIndicator({
+    Key? key,
+    required this.totalSteps,
+    required this.currentStep,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(
-        _totalSteps,
-        (index) => Obx(
-          () => Container(
-            width: 10,
-            height: 10,
-            margin: EdgeInsets.symmetric(horizontal: 5),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: _currentStep.value == index
-                  ? kPrimaryColor
-                  : Colors.blue.shade200,
-            ),
+      children: List.generate(totalSteps, (index) {
+        return AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          width: index == currentStep ? 25 : 10,
+          height: 10,
+          margin: const EdgeInsets.symmetric(horizontal: 5),
+          decoration: BoxDecoration(
+            color: currentStep == index ? kPrimaryColor : kSecondaryColor,
+            borderRadius: BorderRadius.circular(20),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }

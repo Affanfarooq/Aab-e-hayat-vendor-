@@ -1,68 +1,56 @@
-import 'dart:developer';
-
-import 'package:aabehayat_vendor/Const/design_const.dart';
+import 'package:aabehayat_vendor/GenericWidgets/CustomDesign/circle_design.dart';
+import 'package:aabehayat_vendor/GenericWidgets/SpringWidget.dart';
 import 'package:flutter/material.dart';
-import 'package:sprung/sprung.dart';
 
-class CustomSpringButton extends StatefulWidget {
-  final String text;
-  final VoidCallback onPressed;
+class CustomButton extends StatelessWidget {
+  final Function()? onTap;
+  final String title;
+  final IconData? icon;
+  final Color? color;
+  final int? height;
+  final double? radius;
+  final Color? textColor;
+  final double? textSize;
+  final FontWeight fontWeight;
 
-  const CustomSpringButton({
+   CustomButton({
     Key? key,
-    required this.text,
-    required this.onPressed,
+    required this.title,
+    this.onTap,
+    this.icon,
+    this.color, 
+    this.height = 55,
+    this.radius = 20,
+    this.textColor,
+    this.textSize = 15,
+    this.fontWeight = FontWeight.w500,
   }) : super(key: key);
 
   @override
-  _CustomSpringButtonState createState() => _CustomSpringButtonState();
-}
-
-class _CustomSpringButtonState extends State<CustomSpringButton> {
-  double scale = 1.0;
-
-  @override
   Widget build(BuildContext context) {
-    log("PRESSED");
-    return GestureDetector(
-      onTapDown: (_) {
-        setState(() {
-          scale = 0.95; // Slight shrink effect
-        });
-      },
-      onTapUp: (_) {
-        Future.delayed(Duration(milliseconds: 0), () {
-          setState(() {
-            scale = 1.0; // Smooth return to normal
-          });
-          widget.onPressed(); // Call the button action
-        });
-      },
-      onTapCancel: () {
-        setState(() {
-          scale = 1.0; // Reset scale if tap is canceled
-        });
-      },
-      child: AnimatedScale(
-        scale: scale, // Animated scaling effect
-        duration: Duration(milliseconds: 300), // Smooth animation duration
-        curve: Curves.easeOutBack, // Easing effect for smooth transition
-        child: Container(
-          width: 200, // Full width button
-          padding: EdgeInsets.symmetric(vertical: 18),
-          decoration: BoxDecoration(
-            color: Colors.blue, // Button color
-            borderRadius: BorderRadius.circular(12),
-          ),
-          alignment: Alignment.center,
-          child: Text(
-            widget.text,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+    return SpringWidget(
+      intensity: 0.96,
+      onTap: onTap,
+      child: Container(
+        height: height!.toDouble(),
+        decoration: BoxDecoration(
+          color: color ?? kPrimaryColor1,
+          borderRadius: BorderRadius.circular(radius!),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            icon!=null? Padding(
+              padding: const EdgeInsets.only(right: 8),
+              child: Icon(icon, color: Colors.white),
+            ):SizedBox.shrink(),
+            
+            Text(
+              title,
+              style: TextStyle(fontSize: textSize, fontWeight: fontWeight, color: textColor),
             ),
-          ),
+          ],
         ),
       ),
     );

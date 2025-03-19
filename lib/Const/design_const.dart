@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 
   //Theme
-  Color kPrimaryColor = const Color.fromARGB(255, 21, 67, 192);
-  Color kSecondaryColor = Colors.blue.shade600;
+  Color kPrimaryColor =  Color(0xff9BE1FF);
+  Color kSecondaryColor = Color(0xffBEECFF);
 
    const Color kAppBarColor = Color(0xFF2C47C1);
    const Color kBgColor = Color(0xffffffff);

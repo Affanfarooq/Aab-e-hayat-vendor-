@@ -1,17 +1,17 @@
-class Response<T> {
+class ResponseClass<T> {
   final bool isSuccess;
   final T? data;
   final String errorMessage;
 
-  Response({
+  ResponseClass({
     required this.isSuccess,
     required this.data,
     required this.errorMessage,
   });
 
   // Success response factory method
-  factory Response.success(T data) {
-    return Response(
+  factory ResponseClass.success(T data) {
+    return ResponseClass(
       isSuccess: true,
       data: data,
       errorMessage: '',
@@ -19,8 +19,8 @@ class Response<T> {
   }
 
   // Error response factory method
-  factory Response.error(String errorMessage) {
-    return Response(
+  factory ResponseClass.error(String errorMessage) {
+    return ResponseClass(
       isSuccess: false,
       data: null,
       errorMessage: errorMessage,

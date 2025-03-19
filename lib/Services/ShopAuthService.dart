@@ -31,11 +31,11 @@ class ShopService {
   }
 
   // Upload image to Cloudinary with progress tracking
-  Future<Response<String>> uploadImageToCloudinary(
+  Future<ResponseClass<String>> uploadImageToCloudinary(
       File image, String folderName) async {
     final compressedImage = await compressImage(image);
     if (compressedImage == null) {
-      return Response.error("Image compression failed");
+      return ResponseClass.error("Image compression failed");
     }
 
     final url =
@@ -55,23 +55,23 @@ class ShopService {
 
       if (streamedResponse.statusCode == 200) {
         final json = jsonDecode(responseBody);
-        return Response.success(json['secure_url']);
+        return ResponseClass.success(json['secure_url']);
       } else {
-        return Response.error(
+        return ResponseClass.error(
             "Upload failed: ${streamedResponse.statusCode} - $responseBody");
       }
     } catch (e) {
-      return Response.error("Error during upload: $e");
+      return ResponseClass.error("Error during upload: $e");
     }
   }
 
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  Future<Response<String>> saveShopToFirestore(ShopModel shop) async {
+  Future<ResponseClass<String>> saveShopToFirestore(ShopModel shop) async {
     try {
       await firestore.collection('shops').doc(shop.shopId).set(shop.toJson());
-      return Response.success("Shop data saved to Firestore successfully");
+      return ResponseClass.success("Shop data saved to Firestore successfully");
     } catch (e) {
-      return Response.error("Failed to save shop data: $e");
+      return ResponseClass.error("Failed to save shop data: $e");
     }
   }
 }

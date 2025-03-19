@@ -27,3 +27,8 @@ bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return true;
 }
 }
+
+
+
+  Color kPrimaryColor2 = const Color.fromARGB(255, 30, 27, 180);
+  Color kPrimaryColor1 = const Color.fromARGB(255, 28, 81, 227);
