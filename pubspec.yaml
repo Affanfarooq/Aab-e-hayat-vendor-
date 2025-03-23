@@ -58,6 +58,7 @@ dependencies:
   firebase_messaging: ^15.2.4
   flutter_local_notifications: ^19.0.0
   animated: ^2.0.0
+  animations: ^2.0.11
 
 
 

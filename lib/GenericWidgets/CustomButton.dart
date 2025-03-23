@@ -1,6 +1,7 @@
 import 'package:aabehayat_vendor/GenericWidgets/CustomDesign/circle_design.dart';
 import 'package:aabehayat_vendor/GenericWidgets/SpringWidget.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CustomButton extends StatelessWidget {
   final Function()? onTap;
@@ -48,7 +49,7 @@ class CustomButton extends StatelessWidget {
             
             Text(
               title,
-              style: TextStyle(fontSize: textSize, fontWeight: fontWeight, color: textColor),
+              style: GoogleFonts.poppins(fontSize: textSize, fontWeight: fontWeight, color: textColor,),
             ),
           ],
         ),
