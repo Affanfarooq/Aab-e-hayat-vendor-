@@ -1,182 +1,288 @@
+import 'package:aabehayat_vendor/Const/design_const.dart';
+import 'package:aabehayat_vendor/Views/AddBottlesScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class SwapController extends GetxController {
-  var isGallonSelected = true.obs;
-  var dragOffset = 0.0.obs;
-  var gallonCount = 0.obs;
-  var bottleCount = 0.obs;
+class DeliveryScreen extends StatefulWidget {
+  const DeliveryScreen({super.key});
 
-  void toggleSelection() {
-    isGallonSelected.value = !isGallonSelected.value;
-  }
-
-  void increment() {
-    if (isGallonSelected.value) {
-      gallonCount.value++;
-    } else {
-      bottleCount.value++;
-    }
-  }
-
-  void decrement() {
-    if (isGallonSelected.value) {
-      if (gallonCount.value > 0) gallonCount.value--;
-    } else {
-      if (bottleCount.value > 0) bottleCount.value--;
-    }
-  }
-
-  void onDragUpdate(DragUpdateDetails details) {
-    dragOffset.value += details.delta.dx;
-  }
-
-  void onDragEnd(DragEndDetails details) {
-    if (dragOffset.value > 50) {
-      isGallonSelected.value = true;
-    } else if (dragOffset.value < -50) {
-      isGallonSelected.value = false;
-    }
-    dragOffset.value = 0.0; // Reset after swipe
-  }
+  @override
+  _DeliveryScreenState createState() => _DeliveryScreenState();
 }
 
-class GallonBottleSwapAnimation extends StatelessWidget {
-  final SwapController controller = Get.put(SwapController());
+class _DeliveryScreenState extends State<DeliveryScreen>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  final List<Map<String, String>> users = [
+    {'name': 'Umar Jahangir', 'location': 'Gulshan-e-Iqbal block-2'},
+    {'name': 'Ahmed Ali', 'location': 'Gulshan-e-Iqbal block-2'},
+    {'name': 'Sufiyan Mukeem', 'location': 'Gulshan-e-Iqbal block-2'},
+    {'name': 'Sameena Sajjad', 'location': 'Gulshan-e-Iqbal block-2'},
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        toolbarHeight: 0,
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                width: 300,
-                height: 250,
-                child: Obx(() {
-                  double bigSize = 200;
-                  double smallSize = 120;
-                  double containerHeight = 250;
-
-                  return GestureDetector(
-                    onHorizontalDragUpdate: controller.onDragUpdate,
-                    onHorizontalDragEnd: controller.onDragEnd,
-                    onTap: controller.toggleSelection,
-                    child: Stack(
-                      children: [
-                        AnimatedPositioned(
-                          duration: Duration(milliseconds: 600),
-                          curve: Curves.easeInOut,
-                          left: controller.isGallonSelected.value ? 0 : 180,
-                          top: (containerHeight -
-                                  (controller.isGallonSelected.value
-                                      ? bigSize
-                                      : smallSize)) /
-                              2,
-                          child: AnimatedContainer(
-                            duration: Duration(milliseconds: 300),
-                            width: controller.isGallonSelected.value
-                                ? bigSize
-                                : smallSize,
-                            height: controller.isGallonSelected.value
-                                ? bigSize
-                                : smallSize,
-                            child: Image.asset(
-                              'assets/images/galon.png',
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                        ),
-                        AnimatedPositioned(
-                          duration: Duration(milliseconds: 600),
-                          curve: Curves.easeInOut,
-                          left: controller.isGallonSelected.value ? 180 : 0,
-                          top: (containerHeight -
-                                  (controller.isGallonSelected.value
-                                      ? smallSize
-                                      : bigSize)) /
-                              2,
-                          child: AnimatedContainer(
-                            duration: Duration(milliseconds: 300),
-                            width: controller.isGallonSelected.value
-                                ? smallSize
-                                : bigSize,
-                            height: controller.isGallonSelected.value
-                                ? smallSize
-                                : bigSize,
-                            child: Image.asset(
-                              'assets/images/botle.png',
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                }),
-              ),
-            ],
-          ),
-          SizedBox(height: 20),
-          Obx(
-            () => AnimatedSwitcher(
-              duration: Duration(milliseconds: 300),
-              transitionBuilder: (Widget child, Animation<double> animation) {
-                return FadeTransition(opacity: animation, child: child);
-              },
-              child: Text(
-                controller.isGallonSelected.value
-                    ? 'Gallon Count'
-                    : 'Bottle Count',
-                key: ValueKey(
-                    controller.isGallonSelected.value), // Unique key for switch
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
+          const SizedBox(height: 8),
+          TabBar(
+            controller: _tabController,
+            indicatorColor: Colors.blue,
+            labelColor: Colors.blue,
+            unselectedLabelColor: Colors.grey,
+            labelStyle: GoogleFonts.poppins(
+              fontSize: 15,
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                onPressed: controller.decrement,
-                icon: Icon(Icons.remove_circle, color: Colors.blue),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Obx(
-                  () => AnimatedSwitcher(
-                    duration: Duration(milliseconds: 300),
-                    transitionBuilder:
-                        (Widget child, Animation<double> animation) {
-                      return FadeTransition(opacity: animation, child: child);
-                    },
-                    child: Text(
-                      controller.isGallonSelected.value
-                          ? '${controller.gallonCount.value}'
-                          : '${controller.bottleCount.value}',
-                      key: ValueKey(controller
-                          .isGallonSelected.value), // Unique key for switch
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blue,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              IconButton(
-                onPressed: controller.increment,
-                icon: Icon(Icons.add_circle, color: Colors.blue),
-              ),
+            tabs: const [
+              Tab(text: 'Not Delivered'),
+              Tab(text: 'Delivered'),
             ],
+          ),
+          const SizedBox(height: 10),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [_notDeliveredList(), _deliveredList()],
+            ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _notDeliveredList() {
+    return Column(
+      children: [
+        const SizedBox(height: 12),
+        Text(
+          'Delivery',
+          style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w500),
+        ),
+        const SizedBox(height: 5),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: Text(
+            'Only deliveries for today (Tuesday, March 26) will be shown here.',
+            style: GoogleFonts.poppins(color: Colors.grey, fontSize: 13),
+            textAlign: TextAlign.center,
+          ),
+        ),
+        const SizedBox(height: 15),
+        ListView.builder(
+          shrinkWrap: true,
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          itemCount: users.length,
+          itemBuilder: (context, index) {
+            final user = users[index];
+            return Padding(
+              padding: const EdgeInsets.all(6),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: ExpansionTile(
+                  trailing: Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: IconButton(
+                      onPressed: () {
+                        Get.to(()=>AddBottles());
+                      },
+                      icon: SvgPicture.asset(
+                        'assets/images/adddelivery.svg',
+                        height: 30,
+                      ),
+                    ),
+                  ),
+                  collapsedBackgroundColor: Colors.grey[50],
+                  tilePadding: const EdgeInsets.all(0),
+                  collapsedShape: ShapeBorder.lerp(
+                    RoundedRectangleBorder(
+                      side: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    RoundedRectangleBorder(
+                      side: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    0.5,
+                  ),
+                  title: Padding(
+                    padding: const EdgeInsets.only(left: 18, top: 8, bottom: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              user['name']!,
+                              style: GoogleFonts.poppins(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Row(
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/images/locationIcon.svg',
+                                  height: 14,
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  user['location']!,
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.grey, fontSize: 13),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                        SvgPicture.asset(
+                          'assets/images/arrowdown.svg',
+                        ),
+                      ],
+                    ),
+                  ),
+                  children: [
+                    Text(
+                      user['location']!,
+                      style:
+                          GoogleFonts.poppins(color: Colors.grey, fontSize: 13),
+                    )
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _deliveredList() {
+    return Column(
+      children: [
+        const SizedBox(height: 12),
+        Text(
+          'Delivered',
+          style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w500),
+        ),
+        const SizedBox(height: 5),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: Text(
+            'Only deliveries for today (Tuesday, March 26) will be shown here.',
+            style: GoogleFonts.poppins(color: Colors.grey, fontSize: 13),
+            textAlign: TextAlign.center,
+          ),
+        ),
+        const SizedBox(height: 15),
+        ListView.builder(
+          shrinkWrap: true,
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          itemCount: users.length,
+          itemBuilder: (context, index) {
+            final user = users[index];
+            return Padding(
+              padding: const EdgeInsets.all(6),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: ExpansionTile(
+                  trailing: Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: IconButton(
+                      onPressed: () {},
+                      icon:  SvgPicture.asset(
+                        'assets/images/check.svg',
+                        height: 22,
+                      ),
+                    ),
+                  ),
+                  collapsedBackgroundColor: kSecondaryColor,
+                  tilePadding: const EdgeInsets.all(0),
+                  collapsedShape: ShapeBorder.lerp(
+                    RoundedRectangleBorder(
+                      side: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    RoundedRectangleBorder(
+                      side: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    0.5,
+                  ),
+                  title: Padding(
+                    padding: const EdgeInsets.only(left: 18, top: 8, bottom: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              user['name']!,
+                              style: GoogleFonts.poppins(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                             Row(
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/images/locationIcon.svg',
+                                  height: 14,
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  user['location']!,
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.grey, fontSize: 13),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                         SvgPicture.asset(
+                          'assets/images/arrowdown.svg',
+                        ),
+                      ],
+                    ),
+                  ),
+                  children: [
+                    Text(
+                      user['location']!,
+                      style:
+                          GoogleFonts.poppins(color: Colors.grey, fontSize: 13),
+                    )
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
 }

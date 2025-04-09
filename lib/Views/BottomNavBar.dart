@@ -1,4 +1,5 @@
 import 'package:aabehayat_vendor/Views/Dashboard.dart';
+import 'package:aabehayat_vendor/Views/DeliveryScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -8,7 +9,7 @@ class MainScreen extends StatelessWidget {
 
   final List<Widget> pages = [
     Dashboard(),
-    Center(child: Text("Delivery Screen")),
+    DeliveryScreen(),
     Center(child: Text("Payments Screen")),
     Center(child: Text("Profile Screen")),
   ];
