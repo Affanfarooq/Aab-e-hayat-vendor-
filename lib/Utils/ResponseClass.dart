@@ -9,7 +9,6 @@ class ResponseClass<T> {
     required this.errorMessage,
   });
 
-  // Success response factory method
   factory ResponseClass.success(T data) {
     return ResponseClass(
       isSuccess: true,
@@ -18,7 +17,6 @@ class ResponseClass<T> {
     );
   }
 
-  // Error response factory method
   factory ResponseClass.error(String errorMessage) {
     return ResponseClass(
       isSuccess: false,

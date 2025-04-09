@@ -14,6 +14,7 @@ class ShopModel {
   final bool? isCertified;
   final Bottles? bottles;
   final double? shopRating;
+  final String? fcmToken;
 
   ShopModel({
     required this.shopId,
@@ -31,6 +32,7 @@ class ShopModel {
     this.isCertified,
     this.bottles,
     this.shopRating,
+    this.fcmToken,
   });
 
   factory ShopModel.fromJson(Map<String, dynamic> json) {
@@ -49,8 +51,8 @@ class ShopModel {
           ? List<String>.from(json['deliveryOptions'])
           : null,
       deliveryTimes: json['deliveryTimes'] != null
-          ? List<DeliveryTime>.from(json['deliveryTimes']
-              .map((time) => DeliveryTime.fromJson(time)))
+          ? List<DeliveryTime>.from(
+              json['deliveryTimes'].map((time) => DeliveryTime.fromJson(time)))
           : null,
       ownerCnic: json['ownerCnic'] != null
           ? OwnerCnic.fromJson(json['ownerCnic'])
@@ -60,6 +62,7 @@ class ShopModel {
       bottles:
           json['bottles'] != null ? Bottles.fromJson(json['bottles']) : null,
       shopRating: json['shopRating']?.toDouble() ?? 0.0,
+      fcmToken: json['fcmToken'] ?? "", 
     );
   }
 
@@ -80,9 +83,11 @@ class ShopModel {
       'isCertified': isCertified,
       'bottles': bottles?.toJson(),
       'shopRating': shopRating,
+      'fcmToken': fcmToken,
     };
   }
 }
+
 
 /// **Shop Location Model**
 class ShopLocation {
@@ -110,22 +115,19 @@ class ShopLocation {
 }
 
 class DeliveryTime {
-  final String? start;
-  final String? end;
+  final String? time;
 
-  DeliveryTime({this.start, this.end});
+  DeliveryTime({this.time});
 
   factory DeliveryTime.fromJson(Map<String, dynamic> json) {
     return DeliveryTime(
-      start: json['start'] ?? "",
-      end: json['end'] ?? "",
+      time: json['time'] ?? "",
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'start': start,
-      'end': end,
+      'time': time,
     };
   }
 }
@@ -158,7 +160,8 @@ class Bottles {
   final int? totalBottles;
   final double? bottlePrice;
 
-  Bottles({this.totalGalons, this.galonPrice, this.totalBottles, this.bottlePrice});
+  Bottles(
+      {this.totalGalons, this.galonPrice, this.totalBottles, this.bottlePrice});
 
   factory Bottles.fromJson(Map<String, dynamic> json) {
     return Bottles(

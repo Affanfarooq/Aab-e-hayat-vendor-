@@ -10,12 +10,13 @@ class HelperFunctions {
          var snackBar = SnackBar(
                   /// need to set following properties for best effect of awesome_snackbar_content
                   elevation: 0,
-                  behavior: SnackBarBehavior.fixed,
+                  behavior: SnackBarBehavior.floating,
                   backgroundColor: Colors.transparent,
+                   margin: const EdgeInsets.only( left: 0, right: 0), 
                   content: AwesomeSnackbarContent(
                     title: title,
                     message:
-                      message,
+                    message,
 
                     /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
                     contentType: ContentType.help,

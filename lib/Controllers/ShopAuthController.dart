@@ -1,7 +1,10 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:aabehayat_vendor/Models/ShopModel.dart';
+import 'package:aabehayat_vendor/Services/LOcalStorageService.dart';
 import 'package:aabehayat_vendor/Services/ShopAuthService.dart';
 import 'package:aabehayat_vendor/Utils/helper_functions.dart';
+import 'package:aabehayat_vendor/Views/RequestApprovalScreen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -10,18 +13,22 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocoding/geocoding.dart' as geocoding;
 import 'package:location/location.dart' as loc;
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ShopAuthController extends GetxController {
   final ShopService shopService = ShopService();
   final TextEditingController ownerNameController = TextEditingController();
   final TextEditingController shopNameController = TextEditingController();
-  final TextEditingController shopDescriptionController = TextEditingController();
+  final TextEditingController shopDescriptionController =
+      TextEditingController();
   final TextEditingController shopEmailController = TextEditingController();
   final TextEditingController shopPhoneController = TextEditingController();
   final TextEditingController totalGalonsController = TextEditingController();
   final TextEditingController galonPriceController = TextEditingController();
   final TextEditingController totalBottlesController = TextEditingController();
   final TextEditingController bottlePriceController = TextEditingController();
+  final TextEditingController shopPasswordController = TextEditingController();
 
   RxList<String> selectedDeliveryOptions = <String>[].obs;
   Rx<XFile?> shopImage = Rx<XFile?>(null);
@@ -34,6 +41,13 @@ class ShopAuthController extends GetxController {
   final RxString currentAddress = 'Fetching address...'.obs;
   final RxBool mapLoading = true.obs;
   final Completer<GoogleMapController> mapController = Completer();
+  final PageController pageControllerForRegister = PageController();
+  final RxInt totalSteps = 6.obs;
+  final RxInt currentStep = 0.obs;
+
+  final PageController pageControllerForOnBoarding = PageController();
+  final RxInt totalStepsForOnBoardings = 3.obs;
+  final RxInt currentStepForOnBoardings = 0.obs;
 
   @override
   void onInit() {
@@ -41,86 +55,80 @@ class ShopAuthController extends GetxController {
     fetchCurrentLocation();
   }
 
-  Object authtentication(int registrationStep, BuildContext context) {
+  bool authtentication(int registrationStep, BuildContext context) {
     if (registrationStep == 0) {
-      print(registrationStep);
       if (ownerNameController.text.isEmpty) {
-        HelperFunctions.displayToastMessage('Owner Name','Please provide shop owner name',context);
+        HelperFunctions.displayToastMessage(
+            'Owner Name', 'Please provide shop owner name', context);
         return false;
       }
-       if (shopNameController.text.isEmpty) {
-        HelperFunctions.displayToastMessage('Shop Name','Shop Name Field can\'t be empty',context);
+      if (shopNameController.text.isEmpty) {
+        HelperFunctions.displayToastMessage(
+            'Shop Name', 'Shop Name Field can\'t be empty', context);
         return false;
       }
       return true;
-    } 
-    
-    
-    
-     else if (registrationStep == 1) {
-      print(registrationStep);
-      // checking email field
+    } else if (registrationStep == 1) {
       if (shopEmailController.text.isEmpty) {
         HelperFunctions.displayToastMessage(
-            'Email Address',"The email you provide is not valid",context);
+            'Email Address', "The email you provide is not valid", context);
         return false;
       }
-      // checking phone number field
       if (shopPhoneController.text.isEmpty) {
-        HelperFunctions.displayToastMessage(
-            "Phone Number","The Phone Number you provide is not valid",context);
+        HelperFunctions.displayToastMessage("Phone Number",
+            "The Phone Number you provide is not valid", context);
         return false;
       }
       return true;
     } else if (registrationStep == 2) {
       if (totalBottlesController.text.isEmpty ||
           totalGalonsController.text.isEmpty) {
-        HelperFunctions.displayToastMessage("Quantity",'The Field can\'t be empty',context);
+        HelperFunctions.displayToastMessage(
+            "Quantity", 'The Field can\'t be empty', context);
         return false;
       }
       return true;
     } else if (registrationStep == 3) {
       if (shopImage.value == null) {
-        HelperFunctions.displayToastMessage('Shop Image','Provide Your Shop Image',context);
+        HelperFunctions.displayToastMessage(
+            'Shop Image', 'Provide Your Shop Image', context);
         return false;
       }
       if (cnicFrontImage.value == null) {
-        HelperFunctions.displayToastMessage('CNIC Front Image','Provide Your CNIC Front image',context);
+        HelperFunctions.displayToastMessage(
+            'CNIC Front Image', 'Provide Your CNIC Front image', context);
         return false;
       }
       if (cnicBackImage.value == null) {
-        HelperFunctions.displayToastMessage('CNIC Back Image','Provide Your CNIC Back image',context);
+        HelperFunctions.displayToastMessage(
+            'CNIC Back Image', 'Provide Your CNIC Back image', context);
         return false;
       }
       return true;
     } else if (registrationStep == 4) {
       if (currentAddress.isEmpty) {
-        HelperFunctions.displayToastMessage('Shop Address','Provide Your Shop Address',context);
+        HelperFunctions.displayToastMessage(
+            'Shop Address', 'Provide Your Shop Address', context);
         return false;
       }
       return true;
     } else {
-      // checking delivery option
       if (selectedDeliveryOptions.isEmpty) {
         HelperFunctions.displayToastMessage(
-            'Delivery Days','Select your delivery days',context);
+            'Delivery Days', 'Select your delivery days', context);
         return false;
       }
-      // checking delivery time
       if (deliveryTimes.isEmpty) {
-        HelperFunctions.displayToastMessage('Delivery Timings','Add shift to delivering water',context);
+        HelperFunctions.displayToastMessage(
+            'Delivery Timings', 'Add shift to delivering water', context);
         return false;
       }
 
       saveShopData();
       return true;
     }
-
-
-
   }
 
-  // Function to pick shop image
   Future<void> pickShopImage() async {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
@@ -129,7 +137,6 @@ class ShopAuthController extends GetxController {
     }
   }
 
-  // Function to pick cnic front image
   Future<void> pickCnicFrontImage() async {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
@@ -138,7 +145,6 @@ class ShopAuthController extends GetxController {
     }
   }
 
-  // Function to pick cnic back image
   Future<void> pickCnicBackImage() async {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
@@ -147,7 +153,6 @@ class ShopAuthController extends GetxController {
     }
   }
 
-  // Function to select delivery options
   void selectDeliveryOption(String option) {
     if (selectedDeliveryOptions.contains(option)) {
       selectedDeliveryOptions.remove(option);
@@ -157,20 +162,13 @@ class ShopAuthController extends GetxController {
   }
 
   Future<void> pickDeliveryTime() async {
-    TimeOfDay? startTime = await showTimePicker(
+    TimeOfDay? selectedTime = await showTimePicker(
       context: Get.context!,
       initialTime: TimeOfDay.now(),
     );
 
-    if (startTime != null) {
-      TimeOfDay? endTime = await showTimePicker(
-        context: Get.context!,
-        initialTime: startTime,
-      );
-
-      if (endTime != null) {
-        deliveryTimes.add({'start': startTime, 'end': endTime});
-      }
+    if (selectedTime != null) {
+      deliveryTimes.add({'time': selectedTime});
     }
   }
 
@@ -186,77 +184,118 @@ class ShopAuthController extends GetxController {
     return DateFormat('hh:mm a').format(dateTime);
   }
 
-Future<void> saveShopData() async {
-  try {
-    isLoading.value = true;
-    final shopFolder = "shops/${shopNameController.text.trim()}";
+  Future<void> saveShopData() async {
+    try {
+      isLoading.value = true;
 
-    final shopImageResponse = await shopService.uploadImageToCloudinary(
-      File(shopImage.value!.path),
-      shopFolder,
-    );
-    final cnicFrontResponse = await shopService.uploadImageToCloudinary(
-      File(cnicFrontImage.value!.path),
-      shopFolder,
-    );
-    final cnicBackResponse = await shopService.uploadImageToCloudinary(
-      File(cnicBackImage.value!.path),
-      shopFolder,
-    );
+      final userId = await createFirebaseUser();
+      if (userId == null) return;
 
-    if (!shopImageResponse.isSuccess ||
-        !cnicFrontResponse.isSuccess ||
-        !cnicBackResponse.isSuccess) {
-      throw Exception("Failed to upload one or more images");
-    }
+      final shopFolder = "shops/${shopNameController.text}";
 
-    final shop = ShopModel(
-      shopId: DateTime.now().millisecondsSinceEpoch.toString(),
-      ownerName: ownerNameController.text.trim(),
-      shopName: shopNameController.text.trim(),
-      shopDescription: shopDescriptionController.text.trim(),
-      shopEmail: shopEmailController.text.trim(),
-      shopPhone: int.tryParse(shopPhoneController.text),
-      shopImage: shopImageResponse.data,
-      shopLocation: ShopLocation(
+      final shopImageResponse = await shopService.uploadImageToCloudinary(
+        File(shopImage.value!.path),
+        shopFolder,
+      );
+      final cnicFrontResponse = await shopService.uploadImageToCloudinary(
+        File(cnicFrontImage.value!.path),
+        shopFolder,
+      );
+      final cnicBackResponse = await shopService.uploadImageToCloudinary(
+        File(cnicBackImage.value!.path),
+        shopFolder,
+      );
+
+      if (!shopImageResponse.isSuccess ||
+          !cnicFrontResponse.isSuccess ||
+          !cnicBackResponse.isSuccess) {
+        throw Exception("Failed to upload one or more images");
+      }
+
+      final shop = ShopModel(
+        shopId: userId,
+        ownerName: ownerNameController.text.trim(),
+        shopName: shopNameController.text.trim(),
+        shopDescription: shopDescriptionController.text.trim(),
+        shopEmail: shopEmailController.text.trim(),
+        shopPhone: int.tryParse(shopPhoneController.text),
+        shopImage: shopImageResponse.data,
+        shopLocation: ShopLocation(
+          shopAddress: currentAddress.value,
+          latitude: currentLocation.value?.latitude,
+          longitude: currentLocation.value?.longitude,
+        ),
+        deliveryOptions: selectedDeliveryOptions,
+        deliveryTimes: deliveryTimes.map((time) {
+          return DeliveryTime(
+            time: formatTimeOfDay(time['time']!),
+          );
+        }).toList(),
+        ownerCnic: OwnerCnic(
+          cnicFront: cnicFrontResponse.data!,
+          cnicBack: cnicBackResponse.data!,
+        ),
+        bottles: Bottles(
+          totalGalons: int.tryParse(totalGalonsController.text),
+          totalBottles: int.tryParse(totalBottlesController.text),
+          galonPrice: double.tryParse(galonPriceController.text),
+          bottlePrice: double.tryParse(bottlePriceController.text),
+        ),
+        accountApprove: false,
+        isCertified: false,
+        shopRating: 0.0,
+      );
+
+      final firestoreResponse = await shopService.saveShopToFirestore(shop);
+      if (!firestoreResponse.isSuccess) {
+        throw Exception(firestoreResponse.errorMessage);
+      }
+
+      await ShopLocalStorageService.saveShopDataToLocalStorage(
+        userId: userId,
+        ownerName: ownerNameController.text.trim(),
+        shopName: shopNameController.text.trim(),
+        shopDescription: shopDescriptionController.text.trim(),
+        shopEmail: shopEmailController.text.trim(),
+        shopPhone: shopPhoneController.text,
+        shopImage: shopImageResponse.data!,
         shopAddress: currentAddress.value,
         latitude: currentLocation.value?.latitude,
         longitude: currentLocation.value?.longitude,
-      ),
-      deliveryOptions: selectedDeliveryOptions,
-      deliveryTimes: deliveryTimes.map((time) {
-        return DeliveryTime(
-          start: formatTimeOfDay(time['start']!),
-          end: formatTimeOfDay(time['end']!),
-        );
-      }).toList(),
-      ownerCnic: OwnerCnic(
+        selectedDeliveryOptions: selectedDeliveryOptions,
+        deliveryTimes: deliveryTimes,
         cnicFront: cnicFrontResponse.data!,
         cnicBack: cnicBackResponse.data!,
-      ),
-      bottles: Bottles(
-        totalGalons: int.tryParse(totalGalonsController.text),
-        totalBottles: int.tryParse(totalBottlesController.text),
-        galonPrice: double.tryParse(galonPriceController.text),
-        bottlePrice: double.tryParse(bottlePriceController.text),
-      ),
-      accountApprove: false,
-      isCertified: false,
-      shopRating: 0.0,
-    );
+        totalGalons: totalGalonsController.text,
+        totalBottles: totalBottlesController.text,
+        galonPrice: galonPriceController.text,
+        bottlePrice: bottlePriceController.text,
+      );
 
-    final firestoreResponse = await shopService.saveShopToFirestore(shop);
-    if (!firestoreResponse.isSuccess) {
-      throw Exception(firestoreResponse.errorMessage);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setBool("isRequestPending", true);
+      log("Shop data saved successfully!");
+      isLoading.value = false;
+      Get.offAll(() => RequestApprovalScreen());
+    } catch (e) {
+      isLoading.value = false;
+      Get.snackbar("Error", "An error occurred: $e");
     }
-
-    Get.snackbar("Success", "Shop data saved successfully!");
-  } catch (e) {
-    Get.snackbar("Error", "An error occurred: $e");
-  } finally {
-    isLoading.value = false;
   }
-}
+
+  Future<String?> createFirebaseUser() async {
+    try {
+      final userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: shopEmailController.text.trim(),
+        password: shopPasswordController.text.trim(),
+      );
+      return userCredential.user?.uid;
+    } catch (e) {
+      Get.snackbar("Error", "Failed to create user: $e");
+      return null;
+    }
+  }
 
   Future<void> fetchCurrentLocation() async {
     try {
