@@ -1,9 +1,8 @@
 import 'dart:io';
-
-import 'package:aabehayat_vendor/Const/design_const.dart';
-import 'package:aabehayat_vendor/Controllers/ShopAuthController.dart';
-import 'package:aabehayat_vendor/Views/authentication/widget/registration_screen.dart';
-import 'package:aabehayat_vendor/Widgets/textfield/app_text_form_field.dart';
+import 'package:aabehayat_vendor/Controllers/ShopRegistrationController.dart';
+import 'package:aabehayat_vendor/Utils/DesignConstants.dart';
+import 'package:aabehayat_vendor/Utils/TimeFormat.dart';
+import 'package:aabehayat_vendor/Widgets/CustomTextField.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -46,7 +45,7 @@ Widget buildStep(
   );
 }
 
-Widget buildBasicInformationForm(ShopAuthController shopController,
+Widget buildBasicInformationForm(RegistrationController shopController,
     {required String heading, required String description}) {
   return ListView(
     padding: EdgeInsets.symmetric(horizontal: 15),
@@ -100,7 +99,7 @@ Widget buildBasicInformationForm(ShopAuthController shopController,
   );
 }
 
-Widget buildContactInformationForm(ShopAuthController shopController,
+Widget buildContactInformationForm(RegistrationController shopController,
     {required String heading, required String description}) {
   return ListView(
     padding: EdgeInsets.symmetric(horizontal: 15),
@@ -153,7 +152,7 @@ Widget buildContactInformationForm(ShopAuthController shopController,
   );
 }
 
-Widget buildInventoryForm(ShopAuthController shopController,
+Widget buildInventoryForm(RegistrationController shopController,
     {required String heading, required String description}) {
   return ListView(
     padding: EdgeInsets.symmetric(horizontal: 15),
@@ -215,7 +214,7 @@ Widget buildInventoryForm(ShopAuthController shopController,
   );
 }
 
-Widget buildShopImagesForm(ShopAuthController shopController,
+Widget buildShopImagesForm(RegistrationController shopController,
     {required String heading, required String description}) {
   return ListView(
     padding: EdgeInsets.symmetric(horizontal: 15),
@@ -275,7 +274,7 @@ Widget buildShopImagesForm(ShopAuthController shopController,
   );
 }
 
-Widget buildLocationForm(ShopAuthController shopController,
+Widget buildLocationForm(RegistrationController shopController,
     {required String heading, required String description}) {
   return Obx(() {
     return Column(
@@ -351,54 +350,13 @@ Widget buildLocationForm(ShopAuthController shopController,
             ),
           ),
         ),
-        // Container(
-        //   height: 170,
-        //   width: double.infinity,
-        //   color: Colors.white,
-        //   child: Padding(
-        //     padding: const EdgeInsets.all(15.0),
-        //     child: Column(
-        //       mainAxisSize: MainAxisSize.min,
-        //       children: [
-        //         SizedBox(
-        //           height: 5,
-        //         ),
-        //         Text(
-        //           "Your Shop Location",
-        //           style: GoogleFonts.poppins(
-        //               fontSize: 16,
-        //               color: Colors.black,
-        //               fontWeight: FontWeight.w600),
-        //           textAlign: TextAlign.center,
-        //         ),
-        //         SizedBox(height: 10),
-        //         Text(
-        //           shopController.currentAddress.value,
-        //           style: GoogleFonts.poppins(fontSize: 16, color: Colors.black45),
-        //           textAlign: TextAlign.center,
-        //         ),
-        //         SizedBox(height: 10),
-        //         // ElevatedButton(
-        //         //   onPressed: () {
-        //         //     if (shopController.currentLocation.value != null) {
-        //         //       Get.back(
-        //         //           result: shopController.currentLocation.value);
-        //         //     } else {
-        //         //       Get.snackbar("Error", "Please select a location.");
-        //         //     }
-        //         //   },
-        //         //   child: Text("Confirm Location"),
-        //         // ),
-        //       ],
-        //     ),
-        //   ),
-        // ),
+      
       ],
     );
   });
 }
 
-Widget buildDeliveryOptions(ShopAuthController shopController,
+Widget buildDeliveryOptions(RegistrationController shopController,
     {required String heading, required String description}) {
   return Padding(
     padding: const EdgeInsets.only(left: 15.0, right: 5),
@@ -527,7 +485,7 @@ Widget buildDeliveryOptions(ShopAuthController shopController,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "From: ${shopController.formatTimeOfDay(time['time']!)}",
+                            "From: ${formatTimeOfDay(time['time']!)}",
                             style: GoogleFonts.poppins(
                               color: Colors.black,
                             ),
@@ -552,18 +510,6 @@ Widget buildDeliveryOptions(ShopAuthController shopController,
   );
 }
 
-Widget buildInputField(
-  TextEditingController controller,
-  String label, {
-  TextInputType keyboardType = TextInputType.text,
-  String? icon,
-}) {
-  return AppTextField(
-    controller: controller,
-    hintText: label,
-    iconPath: "assets/images/${icon}",
-  );
-}
 
 Widget buildImagePicker(
     String label, VoidCallback onPressed, Rx<XFile?> imageFile) {

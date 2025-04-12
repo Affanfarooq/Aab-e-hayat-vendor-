@@ -1,4 +1,4 @@
-import 'package:aabehayat_vendor/Controllers/ShopAuthController.dart';
+import 'package:aabehayat_vendor/Controllers/ShopRegistrationController.dart';
 import 'package:aabehayat_vendor/Views/WaveAnimation.dart';
 import 'package:aabehayat_vendor/Views/WelcomeScreen.dart';
 import 'package:aabehayat_vendor/Widgets/CustomIndicators.dart';
@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 class OnBoardingScreen extends StatelessWidget {
   OnBoardingScreen({super.key});
 
-  final ShopAuthController shopController = Get.put(ShopAuthController());
+  final RegistrationController shopController = Get.put(RegistrationController());
 
   @override
   Widget build(BuildContext context) {

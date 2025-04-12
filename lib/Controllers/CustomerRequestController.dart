@@ -1,7 +1,7 @@
 import 'package:aabehayat_vendor/Models/CustomerModel.dart';
 import 'package:aabehayat_vendor/Services/CustomerRequestService.dart';
 import 'package:aabehayat_vendor/Services/NotificationService.dart';
-import 'package:aabehayat_vendor/Utils/SnackBars.dart';
+import 'package:aabehayat_vendor/Widgets/CustomSnackBars.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/get.dart';
 

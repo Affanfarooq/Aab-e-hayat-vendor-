@@ -1,11 +1,13 @@
-import 'package:aabehayat_vendor/Const/design_const.dart';
+// ignore_for_file: deprecated_member_use
+
+import 'package:aabehayat_vendor/Utils/DesignConstants.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Dashboard extends StatelessWidget {
-  Dashboard({super.key});
+  const Dashboard({super.key});
 
   @override
   Widget build(BuildContext context) {

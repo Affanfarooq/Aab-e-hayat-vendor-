@@ -1,10 +1,10 @@
+import 'package:aabehayat_vendor/Controllers/ShopRegistrationController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import '../Controllers/ShopAuthController.dart';
 
 class MapScreen extends StatelessWidget {
-  final ShopAuthController controller = Get.find<ShopAuthController>();
+  final RegistrationController controller = Get.find<RegistrationController>();
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class MapScreen extends StatelessWidget {
             GoogleMap(
               initialCameraPosition: CameraPosition(
                 target: controller.currentLocation.value ??
-                    LatLng(37.7749, -122.4194), // Default: San Francisco
+                    LatLng(37.7749, -122.4194),
                 zoom: 15,
               ),
               onMapCreated: (GoogleMapController mapController) {

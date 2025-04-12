@@ -1,5 +1,5 @@
 
-import 'package:aabehayat_vendor/Widgets/CustomDesign/circle_design.dart';
+import 'package:aabehayat_vendor/Utils/DesignConstants.dart';
 import 'package:aabehayat_vendor/Widgets/SpringWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -36,7 +36,7 @@ class CustomButton extends StatelessWidget {
       child: Container(
         height: height!.toDouble(),
         decoration: BoxDecoration(
-          color: color ?? kPrimaryColor1,
+          color: color ?? kPrimaryColor,
           borderRadius: BorderRadius.circular(radius!),
         ),
         child: Row(

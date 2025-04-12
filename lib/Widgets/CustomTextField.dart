@@ -1,7 +1,21 @@
-import 'package:aabehayat_vendor/Const/design_const.dart';
+import 'package:aabehayat_vendor/Utils/DesignConstants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+Widget buildInputField(
+  TextEditingController controller,
+  String label, {
+  TextInputType keyboardType = TextInputType.text,
+  String? icon,
+}) {
+  return AppTextField(
+    controller: controller,
+    hintText: label,
+    iconPath: "assets/images/${icon}",
+  );
+}
+
 
 class AppTextField extends StatelessWidget {
   final String hintText;

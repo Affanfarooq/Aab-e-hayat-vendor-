@@ -14,7 +14,6 @@ class ShopService {
   final String uploadPreset = "shop_images_preset";
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  // Compress image
   Future<XFile?> compressImage(File image) async {
     try {
       final compressedImage = await FlutterImageCompress.compressAndGetFile(
@@ -76,14 +75,12 @@ class ShopService {
   }
 
 
-  static Future<Map<String, dynamic>?> getShopData() async {
+  static Future<Map<String, dynamic>?> getShopData(User shop) async {
     try {
-      final uid = FirebaseAuth.instance.currentUser?.uid;
-      if (uid == null) return null;
 
       DocumentSnapshot snapshot = await FirebaseFirestore.instance
           .collection('shops')
-          .doc(uid)
+          .doc(shop.uid)
           .get();
 
       if (snapshot.exists) {
@@ -96,4 +93,6 @@ class ShopService {
       return null;
     }
   }
+
+
 }

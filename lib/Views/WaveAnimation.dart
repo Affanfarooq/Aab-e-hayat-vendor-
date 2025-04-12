@@ -1,7 +1,7 @@
 
 import 'dart:developer';
 import 'dart:math' as math;
-import 'package:aabehayat_vendor/Controllers/ShopAuthController.dart';
+import 'package:aabehayat_vendor/Controllers/ShopRegistrationController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -21,15 +21,15 @@ class _WaveAnimationScreenState extends State<WaveAnimationScreen>
   late AnimationController _baseHeightController;
   late Animation<double> _heightAnimation;
   late Animation<double> _baseHeightAnimation;
-  late ShopAuthController controller;
+  late RegistrationController controller;
 
   @override
   void initState() {
     super.initState();
     try {
-      controller = Get.find<ShopAuthController>();
+      controller = Get.find<RegistrationController>();
     } catch (e) {
-      controller = Get.put(ShopAuthController());
+      controller = Get.put(RegistrationController());
     }
     
     // Wave Animation Controller

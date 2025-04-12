@@ -1,8 +1,8 @@
-import 'package:aabehayat_vendor/Const/design_const.dart';
+import 'package:aabehayat_vendor/Utils/DesignConstants.dart';
 import 'package:aabehayat_vendor/Widgets/SpringWidget.dart';
 import 'package:aabehayat_vendor/Widgets/customButton.dart';
-import 'package:aabehayat_vendor/Views/authentication/widget/login_screen.dart';
-import 'package:aabehayat_vendor/Views/authentication/widget/registration_screen.dart';
+import 'package:aabehayat_vendor/Views/AuthenticationScreens/LoginScreen.dart';
+import 'package:aabehayat_vendor/Views/AuthenticationScreens/RegistrationScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -48,7 +48,7 @@ class WelcomeScreen extends StatelessWidget {
                   colors: [
                     Colors.blue.withOpacity(0.6),
                     Colors.transparent,
-                    Colors.black.withOpacity(0.6),
+                    Colors.black.withOpacity(0.5),
                   ],
                 ),
               ),

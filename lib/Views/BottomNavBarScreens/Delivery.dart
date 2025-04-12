@@ -1,4 +1,4 @@
-import 'package:aabehayat_vendor/Const/design_const.dart';
+import 'package:aabehayat_vendor/Utils/DesignConstants.dart';
 import 'package:aabehayat_vendor/Views/AddBottlesScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';

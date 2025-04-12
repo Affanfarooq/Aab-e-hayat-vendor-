@@ -1,8 +1,9 @@
 import 'dart:math' as math;
-import 'package:aabehayat_vendor/Services/ShopAuthService.dart';
-import 'package:aabehayat_vendor/Views/Dashboard.dart';
+import 'package:aabehayat_vendor/Services/ShopService.dart';
+import 'package:aabehayat_vendor/Views/BottomNavBarScreens/Dashboard.dart';
 import 'package:aabehayat_vendor/Views/WaveAnimation.dart';
 import 'package:aabehayat_vendor/Widgets/SpringWidget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -52,7 +53,8 @@ class _RequestApprovalScreenState extends State<RequestApprovalScreen>
   }
 
   Future<void> checkAndUpdateRequestStatus() async {
-    final shopData = await ShopService.getShopData();
+    User? user = FirebaseAuth.instance.currentUser;
+    final shopData = await ShopService.getShopData(user!);
 
     if (shopData != null) {
       bool isApproved = shopData['accountApprove'] ?? false;

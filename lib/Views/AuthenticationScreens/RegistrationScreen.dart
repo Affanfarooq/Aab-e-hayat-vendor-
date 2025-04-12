@@ -1,6 +1,6 @@
 import 'dart:developer';
-import 'package:aabehayat_vendor/Const/design_const.dart';
-import 'package:aabehayat_vendor/Controllers/ShopAuthController.dart';
+import 'package:aabehayat_vendor/Utils/DesignConstants.dart';
+import 'package:aabehayat_vendor/Controllers/ShopRegistrationController.dart';
 import 'package:aabehayat_vendor/Widgets/CustomLoading.dart';
 import 'package:aabehayat_vendor/Widgets/SpringWidget.dart';
 import 'package:aabehayat_vendor/Widgets/WidgetsForOnBoarding.dart';
@@ -15,7 +15,7 @@ class RegistrationScreens extends StatefulWidget {
 }
 
 class _RegistrationScreensState extends State<RegistrationScreens> {
-  final ShopAuthController _controller = Get.find<ShopAuthController>();
+  final RegistrationController _controller = Get.find<RegistrationController>();
 
   @override
   Widget build(BuildContext context) {

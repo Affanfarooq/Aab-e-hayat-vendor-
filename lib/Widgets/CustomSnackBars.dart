@@ -1,14 +1,43 @@
-
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class BottomSheetsAndDialogs {}
+class SnackbarUtils {
+  static void showSuccess(String message) {
+    Get.snackbar(
+      "Success",
+      message,
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: Colors.green,
+      colorText: Colors.white,
+      duration: Duration(seconds: 3),
+      margin: EdgeInsets.all(10),
+      borderRadius: 8,
+      icon: Icon(Icons.check_circle, color: Colors.white),
+    );
+  }
+
+  static void showError(String message) {
+    Get.snackbar(
+      "Error",
+      message,
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: Colors.red,
+      colorText: Colors.white,
+      duration: Duration(seconds: 3),
+      margin: EdgeInsets.all(10),
+      borderRadius: 8,
+      icon: Icon(Icons.error, color: Colors.white),
+    );
+  }
+}
+
+
+
 
 class HelperFunctions {
   static Future<void> displayToastMessage(String title, String message, BuildContext context) async {
-    // BotToast.showText(text: message,contentColor: kSecondaryColor,);
          var snackBar = SnackBar(
-                  /// need to set following properties for best effect of awesome_snackbar_content
                   elevation: 0,
                   behavior: SnackBarBehavior.floating,
                   backgroundColor: Colors.transparent,
@@ -18,7 +47,6 @@ class HelperFunctions {
                     message:
                     message,
 
-                    /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
                     contentType: ContentType.help,
                   ),
                 );
@@ -26,12 +54,5 @@ class HelperFunctions {
                 ScaffoldMessenger.of(context)
                   ..hideCurrentSnackBar()
                   ..showSnackBar(snackBar);
-  }
-
-  bool checkUrl(String url) {
-    if (url.startsWith('http')) {
-      return true;
-    }
-    return false;
   }
 }

@@ -2,12 +2,12 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:aabehayat_vendor/Models/ShopModel.dart';
 import 'package:aabehayat_vendor/Services/LOcalStorageService.dart';
-import 'package:aabehayat_vendor/Services/ShopAuthService.dart';
-import 'package:aabehayat_vendor/Utils/helper_functions.dart';
+import 'package:aabehayat_vendor/Services/ShopService.dart';
+import 'package:aabehayat_vendor/Utils/TimeFormat.dart';
+import 'package:aabehayat_vendor/Widgets/CustomSnackBars.dart';
 import 'package:aabehayat_vendor/Views/RequestApprovalScreen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'dart:async';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -16,12 +16,11 @@ import 'package:location/location.dart' as loc;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ShopAuthController extends GetxController {
+class RegistrationController extends GetxController {
   final ShopService shopService = ShopService();
   final TextEditingController ownerNameController = TextEditingController();
   final TextEditingController shopNameController = TextEditingController();
-  final TextEditingController shopDescriptionController =
-      TextEditingController();
+  final TextEditingController shopDescriptionController = TextEditingController();
   final TextEditingController shopEmailController = TextEditingController();
   final TextEditingController shopPhoneController = TextEditingController();
   final TextEditingController totalGalonsController = TextEditingController();
@@ -172,18 +171,6 @@ class ShopAuthController extends GetxController {
     }
   }
 
-  String formatTimeOfDay(TimeOfDay timeOfDay) {
-    final now = DateTime.now();
-    final dateTime = DateTime(
-      now.year,
-      now.month,
-      now.day,
-      timeOfDay.hour,
-      timeOfDay.minute,
-    );
-    return DateFormat('hh:mm a').format(dateTime);
-  }
-
   Future<void> saveShopData() async {
     try {
       isLoading.value = true;
@@ -206,9 +193,7 @@ class ShopAuthController extends GetxController {
         shopFolder,
       );
 
-      if (!shopImageResponse.isSuccess ||
-          !cnicFrontResponse.isSuccess ||
-          !cnicBackResponse.isSuccess) {
+      if (!shopImageResponse.isSuccess || !cnicFrontResponse.isSuccess || !cnicBackResponse.isSuccess) {
         throw Exception("Failed to upload one or more images");
       }
 
@@ -383,4 +368,5 @@ class ShopAuthController extends GetxController {
     currentAddress.value = 'Fetching address...';
     mapLoading.value = true;
   }
+
 }
