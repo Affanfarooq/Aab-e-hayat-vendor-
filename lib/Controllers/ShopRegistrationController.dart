@@ -16,7 +16,7 @@ import 'package:location/location.dart' as loc;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class RegistrationController extends GetxController {
+class ShopRegistrationController extends GetxController {
   final ShopService shopService = ShopService();
   final TextEditingController ownerNameController = TextEditingController();
   final TextEditingController shopNameController = TextEditingController();

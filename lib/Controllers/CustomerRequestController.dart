@@ -33,7 +33,7 @@ class RequestController extends GetxController {
     var result = await requestService.updateRequestStatus(customerId, "accepted");
     if (result.isSuccess) {
       pendingRequests.removeWhere((c) => c.customerId == customerId);
-     final NotificationService notificationService = NotificationService();
+    //  final NotificationService notificationService = NotificationService();
       // notificationService.sendPushNotification(customerId, "Your request has been accepted!");
     } else {
       SnackbarUtils.showError(result.errorMessage);

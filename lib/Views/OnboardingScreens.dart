@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 class OnBoardingScreen extends StatelessWidget {
   OnBoardingScreen({super.key});
 
-  final RegistrationController shopController = Get.put(RegistrationController());
+  final ShopRegistrationController shopController = Get.put(ShopRegistrationController());
 
   @override
   Widget build(BuildContext context) {

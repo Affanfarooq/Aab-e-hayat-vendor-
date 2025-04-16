@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapScreen extends StatelessWidget {
-  final RegistrationController controller = Get.find<RegistrationController>();
+  final ShopRegistrationController controller = Get.find<ShopRegistrationController>();
 
   @override
   Widget build(BuildContext context) {

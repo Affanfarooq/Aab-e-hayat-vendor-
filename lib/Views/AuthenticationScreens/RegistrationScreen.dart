@@ -9,13 +9,15 @@ import 'package:aabehayat_vendor/Views/WaveAnimation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class RegistrationScreens extends StatefulWidget {
+class RegistrationScreen extends StatefulWidget {
+  const RegistrationScreen({super.key});
+
   @override
-  State<RegistrationScreens> createState() => _RegistrationScreensState();
+  State<RegistrationScreen> createState() => _RegistrationScreenState();
 }
 
-class _RegistrationScreensState extends State<RegistrationScreens> {
-  final RegistrationController _controller = Get.find<RegistrationController>();
+class _RegistrationScreenState extends State<RegistrationScreen> {
+  final ShopRegistrationController _controller = Get.find<ShopRegistrationController>();
 
   @override
   Widget build(BuildContext context) {

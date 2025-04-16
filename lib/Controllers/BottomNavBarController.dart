@@ -1,4 +1,4 @@
-import 'package:aabehayat_vendor/Controllers/AuthController.dart';
+import 'package:aabehayat_vendor/Controllers/LoginController.dart';
 import 'package:aabehayat_vendor/Views/BottomNavBar.dart';
 import 'package:aabehayat_vendor/Views/BottomNavBarScreens/Dashboard.dart';
 import 'package:aabehayat_vendor/Views/BottomNavBarScreens/Delivery.dart';
@@ -21,7 +21,7 @@ class BottomNavController extends GetxController {
         child: IconButton(
       icon: Icon(Icons.logout),
       onPressed: () {
-        Get.find<AuthController>().logout();
+        Get.find<LoginController>().logout();
       },
     )),
   ];

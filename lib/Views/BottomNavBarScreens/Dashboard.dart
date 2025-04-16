@@ -1,9 +1,12 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:aabehayat_vendor/Utils/DesignConstants.dart';
+import 'package:aabehayat_vendor/Views/CustomersScreen.dart';
+import 'package:aabehayat_vendor/Widgets/SpringWidget.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Dashboard extends StatelessWidget {
@@ -18,7 +21,7 @@ class Dashboard extends StatelessWidget {
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
             SliverAppBar(
-              expandedHeight: 350,
+              expandedHeight: 355,
               floating: false,
               pinned: true,
               surfaceTintColor: Colors.transparent,
@@ -42,7 +45,7 @@ class Dashboard extends StatelessWidget {
                                   fontSize: 18,
                                 ),
                               ),
-                              const SizedBox(height: 12),
+                              const SizedBox(height: 15),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -51,10 +54,10 @@ class Dashboard extends StatelessWidget {
                                     child: Row(
                                       children: [
                                         CircleAvatar(
-                                          radius: 24,
+                                          radius: 22,
                                           backgroundColor: Colors.grey.shade200,
                                         ),
-                                        const SizedBox(width: 5),
+                                        const SizedBox(width: 10),
                                         Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -64,7 +67,7 @@ class Dashboard extends StatelessWidget {
                                               style: GoogleFonts.poppins(
                                                 color: Colors.black,
                                                 fontWeight: FontWeight.w500,
-                                                fontSize: 16,
+                                                fontSize: 15,
                                               ),
                                             ),
                                             Row(
@@ -111,7 +114,6 @@ class Dashboard extends StatelessWidget {
                                     child: Center(
                                       child: SvgPicture.asset(
                                         'assets/images/notification.svg',
-                       
                                       ),
                                     ),
                                   ),
@@ -120,7 +122,7 @@ class Dashboard extends StatelessWidget {
                             ],
                           ),
                         ),
-                        const SizedBox(height: 15),
+                        const SizedBox(height: 18),
                         incomeCard(),
                         const SizedBox(height: 15),
                         banner(),
@@ -154,7 +156,7 @@ class Dashboard extends StatelessWidget {
                   const SizedBox(
                     height: 8,
                   ),
-                  const Row(
+                  Row(
                     children: [
                       DeliveryCard(
                         title: 'Today Delivered',
@@ -162,6 +164,7 @@ class Dashboard extends StatelessWidget {
                         largeBottleQty: '10',
                         smallBottleQty: '05',
                         iconPath: 'assets/images/delivery.svg',
+                        onTap: () {},
                       ),
                       SizedBox(
                         width: 12,
@@ -172,13 +175,14 @@ class Dashboard extends StatelessWidget {
                         largeBottleQty: '100',
                         smallBottleQty: '50',
                         iconPath: 'assets/images/delivery.svg',
+                        onTap: () {},
                       ),
                     ],
                   ),
                   const SizedBox(
                     height: 14,
                   ),
-                  const Row(
+                  Row(
                     children: [
                       DeliveryCard(
                         title: 'Total Bottles',
@@ -188,6 +192,7 @@ class Dashboard extends StatelessWidget {
                         smallBottleQty: '15',
                         smallBottleTotal: '/30',
                         iconPath: 'assets/images/bottleIcon.svg',
+                        onTap: () {},
                       ),
                       SizedBox(
                         width: 12,
@@ -198,6 +203,7 @@ class Dashboard extends StatelessWidget {
                         largeBottleQty: '25',
                         smallBottleQty: '15',
                         iconPath: 'assets/images/bottleIcon.svg',
+                        onTap: () {},
                       ),
                     ],
                   ),
@@ -221,8 +227,9 @@ List<String> bannerImages = [
 Widget incomeCard() {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 16),
-    child: Container(
-      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
+    child:
+     Container(
+      padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 25),
       decoration: BoxDecoration(
         color: kThirdColor,
         borderRadius: BorderRadius.circular(10),
@@ -230,78 +237,84 @@ Widget incomeCard() {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                "Today Income",
-                style: GoogleFonts.poppins(
-                  color: Colors.grey.shade500,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(height: 5),
-              RichText(
-                text: TextSpan(
+          SpringWidget(
+            onTap: () {},
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "Today Income",
                   style: GoogleFonts.poppins(
-                    color: Colors.black,
-                    fontSize: 14,
+                    color: Colors.grey.shade500,
+                    fontSize: 13,
                     fontWeight: FontWeight.w500,
                   ),
-                  children: [
-                    TextSpan(text: "Pkr. "),
-                    TextSpan(
-                      text: "1,500",
-                      style: GoogleFonts.poppins(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: kForthColor,
-                      ),
-                    ),
-                  ],
                 ),
-              ),
-            ],
+                const SizedBox(height: 5),
+                RichText(
+                  text: TextSpan(
+                    style: GoogleFonts.poppins(
+                      color: Colors.black,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    children: [
+                      TextSpan(text: "Pkr. "),
+                      TextSpan(
+                        text: "1,500",
+                        style: GoogleFonts.poppins(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: kForthColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
           Container(
             width: 1,
             height: 35,
             color: Colors.grey.shade300,
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                "Monthly Income",
-                style: GoogleFonts.poppins(
-                  color: Colors.grey.shade500,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(height: 5),
-              RichText(
-                text: TextSpan(
+          SpringWidget(
+            onTap: () {},
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "Monthly Income",
                   style: GoogleFonts.poppins(
-                    color: Colors.black,
-                    fontSize: 14,
+                    color: Colors.grey.shade500,
+                    fontSize: 13,
                     fontWeight: FontWeight.w500,
                   ),
-                  children: [
-                    TextSpan(text: "Pkr. "),
-                    TextSpan(
-                      text: "1,500",
-                      style: GoogleFonts.poppins(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: kForthColor,
-                      ),
-                    ),
-                  ],
                 ),
-              ),
-            ],
+                const SizedBox(height: 5),
+                RichText(
+                  text: TextSpan(
+                    style: GoogleFonts.poppins(
+                      color: Colors.black,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    children: [
+                      TextSpan(text: "Pkr. "),
+                      TextSpan(
+                        text: "1,500",
+                        style: GoogleFonts.poppins(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: kForthColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -319,90 +332,101 @@ Widget otherInfoCard() {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              "Total Customers",
-              style: GoogleFonts.poppins(
-                color: Colors.grey.shade500,
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
+        SpringWidget(
+          onTap: () {
+            Get.to(()=>
+                CustomersScreen(),
+                transition: Transition.rightToLeft,
+                duration: const Duration(milliseconds: 400));
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "Total Customers",
+                style: GoogleFonts.poppins(
+                  color: Colors.grey.shade500,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                SvgPicture.asset(
-                  'assets/images/customers.svg',
-                  width: 18,
-                  height: 18,
-                ),
-                const SizedBox(width: 8),
-                 Text(
-                  "15",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: kForthColor,
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  SvgPicture.asset(
+                    'assets/images/customers.svg',
+                    width: 18,
+                    height: 18,
                   ),
-                ),
-              ],
-            )
-          ],
+                  const SizedBox(width: 8),
+                  Text(
+                    "15",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: kForthColor,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
         Container(
           width: 1,
           height: 35,
           color: Colors.grey.shade300,
         ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              "Shop Rating",
-              style: GoogleFonts.poppins(
-                color: Colors.grey.shade500,
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
+        SpringWidget(
+          onTap: () {},
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "Shop Rating",
+                style: GoogleFonts.poppins(
+                  color: Colors.grey.shade500,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                SvgPicture.asset(
-                  'assets/images/ratings.svg',
-                  width: 18,
-                  height: 18,
-                  // color: Colors.grey[400],
-                ),
-                const SizedBox(width: 8),
-                RichText(
-                  text: TextSpan(
-                    style: GoogleFonts.poppins(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    children: [
-                      TextSpan(
-                          text: "4.5 ",
-                          style:
-                              GoogleFonts.poppins(fontWeight: FontWeight.w600)),
-                      TextSpan(
-                        text: "(8 reviews)",
-                        style: GoogleFonts.poppins(
-                          fontSize: 12,
-                          fontWeight: FontWeight.normal,
-                          color: Colors.grey.shade400,
-                        ),
-                      ),
-                    ],
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  SvgPicture.asset(
+                    'assets/images/ratings.svg',
+                    width: 18,
+                    height: 18,
+                    // color: Colors.grey[400],
                   ),
-                ),
-              ],
-            )
-          ],
+                  const SizedBox(width: 8),
+                  RichText(
+                    text: TextSpan(
+                      style: GoogleFonts.poppins(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      children: [
+                        TextSpan(
+                            text: "4.5 ",
+                            style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w600)),
+                        TextSpan(
+                          text: "(8 reviews)",
+                          style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.grey.shade400,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ],
     ),
@@ -452,6 +476,7 @@ class DeliveryCard extends StatelessWidget {
   final String? largeBottleTotal;
   final String? smallBottleTotal;
   final String iconPath;
+  final VoidCallback onTap;
 
   const DeliveryCard({
     super.key,
@@ -462,93 +487,98 @@ class DeliveryCard extends StatelessWidget {
     this.largeBottleTotal,
     this.smallBottleTotal,
     required this.iconPath,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Container(
-        padding: const EdgeInsets.only(left: 10, right: 8, top: 12, bottom: 12),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: Colors.grey.shade100,
-            width: 1,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.08),
-              spreadRadius: 1.3,
-              blurRadius: 2,
-              offset: const Offset(0, 0),
+      child: SpringWidget(
+        onTap: onTap,
+        child: Container(
+          padding:
+              const EdgeInsets.only(left: 10, right: 8, top: 12, bottom: 12),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: Colors.grey.shade100,
+              width: 1,
             ),
-          ],
-        ),
-        child: Column(
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: GoogleFonts.poppins(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.08),
+                spreadRadius: 1.3,
+                blurRadius: 2,
+                offset: const Offset(0, 0),
+              ),
+            ],
+          ),
+          child: Column(
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: GoogleFonts.poppins(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      subtitle != ''
+                          ? Text(
+                              subtitle,
+                              style: GoogleFonts.poppins(
+                                fontSize: 10,
+                                color: Colors.grey[500],
+                              ),
+                            )
+                          : const SizedBox.shrink(),
+                    ],
+                  ),
+                  Container(
+                    height: 32,
+                    width: 32,
+                    decoration: BoxDecoration(
+                      color: kThirdColor,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(
+                          iconPath == 'assets/images/delivery.svg' ? 6.5 : 6),
+                      child: SvgPicture.asset(
+                        iconPath,
+                        color: kForthColor,
                       ),
                     ),
-                    subtitle != ''
-                        ? Text(
-                            subtitle,
-                            style: GoogleFonts.poppins(
-                              fontSize: 10,
-                              color: Colors.grey[500],
-                            ),
-                          )
-                        : const SizedBox.shrink(),
-                  ],
-                ),
-                Container(
-                  height: 32,
-                  width: 32,
-                  decoration: BoxDecoration(
-                    color: kThirdColor,
-                    shape: BoxShape.circle,
                   ),
-                  child: Padding(
-                    padding: EdgeInsets.all(
-                        iconPath == 'assets/images/delivery.svg' ? 6.5 : 6),
-                    child: SvgPicture.asset(
-                      iconPath,
-                      color: kForthColor,
-                    ),
+                ],
+              ),
+              const SizedBox(
+                height: 18,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildBottleInfo(
+                    'assets/images/bottleIcon.svg',
+                    '$largeBottleQty',
+                    largeBottleTotal,
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 18,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildBottleInfo(
-                  'assets/images/bottleIcon.svg',
-                  '$largeBottleQty',
-                  largeBottleTotal,
-                ),
-                _buildBottleInfo(
-                  'assets/images/galonIcon.svg',
-                  '$smallBottleQty',
-                  smallBottleTotal,
-                ),
-              ],
-            ),
-          ],
+                  _buildBottleInfo(
+                    'assets/images/galonIcon.svg',
+                    '$smallBottleQty',
+                    smallBottleTotal,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

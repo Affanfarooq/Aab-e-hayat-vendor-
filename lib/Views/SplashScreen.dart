@@ -1,9 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'OnboardingScreens.dart';
 
 class SplashScreenAnimation extends StatefulWidget {
   @override
@@ -18,11 +16,7 @@ class _SplashScreenAnimationState extends State<SplashScreenAnimation>
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          WaveAnimationForSplashScreen(
-              // onAnimationComplete: () {
-              //   Get.to(() => OnBoardingScreen(), transition: Transition.rightToLeftWithFade);
-              // },
-              ),
+          WaveAnimationForSplashScreen(),
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -32,7 +26,9 @@ class _SplashScreenAnimationState extends State<SplashScreenAnimation>
                   height: 120,
                   fit: BoxFit.cover,
                 ),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
                 Text(
                   "AABEHAYAT",
                   style: GoogleFonts.poppins(
@@ -63,8 +59,7 @@ class WaveAnimationForSplashScreen extends StatefulWidget {
   final VoidCallback? onAnimationComplete;
 
   const WaveAnimationForSplashScreen(
-      {Key? key, this.height, this.onAnimationComplete})
-      : super(key: key);
+      {super.key, this.height, this.onAnimationComplete});
 
   @override
   _WaveAnimationForSplashScreenState createState() =>

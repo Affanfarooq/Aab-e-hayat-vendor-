@@ -4,7 +4,6 @@ import 'package:aabehayat_vendor/Widgets/customButton.dart';
 import 'package:aabehayat_vendor/Views/AuthenticationScreens/LoginScreen.dart';
 import 'package:aabehayat_vendor/Views/AuthenticationScreens/RegistrationScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -34,10 +33,7 @@ class WelcomeScreen extends StatelessWidget {
               opacity: const AlwaysStoppedAnimation(0.8),
             ),
 
-            // SvgPicture.asset(
-            //   "assets/images/welcome.svg",
-            //   fit: BoxFit.cover,
-            // ),
+          
           ),
           Positioned.fill(
             child: Container(
@@ -109,7 +105,7 @@ class WelcomeScreen extends StatelessWidget {
                           child: SpringWidget(
                             onTap: () {
                               Get.to(
-                                () => RegistrationScreens(),
+                                () => RegistrationScreen(),
                                 transition: Transition.rightToLeft,
                                 duration: const Duration(milliseconds: 400),
                               );

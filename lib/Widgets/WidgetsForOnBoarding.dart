@@ -45,7 +45,7 @@ Widget buildStep(
   );
 }
 
-Widget buildBasicInformationForm(RegistrationController shopController,
+Widget buildBasicInformationForm(ShopRegistrationController shopController,
     {required String heading, required String description}) {
   return ListView(
     padding: EdgeInsets.symmetric(horizontal: 15),
@@ -99,7 +99,7 @@ Widget buildBasicInformationForm(RegistrationController shopController,
   );
 }
 
-Widget buildContactInformationForm(RegistrationController shopController,
+Widget buildContactInformationForm(ShopRegistrationController shopController,
     {required String heading, required String description}) {
   return ListView(
     padding: EdgeInsets.symmetric(horizontal: 15),
@@ -152,7 +152,7 @@ Widget buildContactInformationForm(RegistrationController shopController,
   );
 }
 
-Widget buildInventoryForm(RegistrationController shopController,
+Widget buildInventoryForm(ShopRegistrationController shopController,
     {required String heading, required String description}) {
   return ListView(
     padding: EdgeInsets.symmetric(horizontal: 15),
@@ -214,7 +214,7 @@ Widget buildInventoryForm(RegistrationController shopController,
   );
 }
 
-Widget buildShopImagesForm(RegistrationController shopController,
+Widget buildShopImagesForm(ShopRegistrationController shopController,
     {required String heading, required String description}) {
   return ListView(
     padding: EdgeInsets.symmetric(horizontal: 15),
@@ -274,7 +274,7 @@ Widget buildShopImagesForm(RegistrationController shopController,
   );
 }
 
-Widget buildLocationForm(RegistrationController shopController,
+Widget buildLocationForm(ShopRegistrationController shopController,
     {required String heading, required String description}) {
   return Obx(() {
     return Column(
@@ -356,7 +356,7 @@ Widget buildLocationForm(RegistrationController shopController,
   });
 }
 
-Widget buildDeliveryOptions(RegistrationController shopController,
+Widget buildDeliveryOptions(ShopRegistrationController shopController,
     {required String heading, required String description}) {
   return Padding(
     padding: const EdgeInsets.only(left: 15.0, right: 5),

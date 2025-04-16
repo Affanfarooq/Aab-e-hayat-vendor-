@@ -1,9 +1,6 @@
 
-import 'dart:developer';
 import 'dart:math' as math;
-import 'package:aabehayat_vendor/Controllers/ShopRegistrationController.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class WaveAnimationScreen extends StatefulWidget {
   final double? height;
@@ -21,16 +18,11 @@ class _WaveAnimationScreenState extends State<WaveAnimationScreen>
   late AnimationController _baseHeightController;
   late Animation<double> _heightAnimation;
   late Animation<double> _baseHeightAnimation;
-  late RegistrationController controller;
 
   @override
   void initState() {
     super.initState();
-    try {
-      controller = Get.find<RegistrationController>();
-    } catch (e) {
-      controller = Get.put(RegistrationController());
-    }
+   
     
     // Wave Animation Controller
     _waveController = AnimationController(
@@ -96,10 +88,7 @@ class _WaveAnimationScreenState extends State<WaveAnimationScreen>
     // Original implementation for full-screen wave
     return Column(
       children: [
-        Obx(() {
-          log('STEP : ${controller.currentStep.value}');
-          return SizedBox();
-        }),
+        
         Expanded(
           child: AnimatedBuilder(
             animation: Listenable.merge(

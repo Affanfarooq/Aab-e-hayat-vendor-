@@ -1,40 +1,16 @@
+import 'package:aabehayat_vendor/Controllers/DeliveryScreenController.dart';
 import 'package:aabehayat_vendor/Utils/DesignConstants.dart';
 import 'package:aabehayat_vendor/Views/AddBottlesScreen.dart';
+import 'package:aabehayat_vendor/Widgets/CustomContainer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class DeliveryScreen extends StatefulWidget {
-  const DeliveryScreen({super.key});
+class DeliveryScreen extends StatelessWidget {
+   DeliveryScreen({super.key});
 
-  @override
-  _DeliveryScreenState createState() => _DeliveryScreenState();
-}
-
-class _DeliveryScreenState extends State<DeliveryScreen>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 2, vsync: this);
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
-  final List<Map<String, String>> users = [
-    {'name': 'Umar Jahangir', 'location': 'Gulshan-e-Iqbal block-2'},
-    {'name': 'Ahmed Ali', 'location': 'Gulshan-e-Iqbal block-2'},
-    {'name': 'Sufiyan Mukeem', 'location': 'Gulshan-e-Iqbal block-2'},
-    {'name': 'Sameena Sajjad', 'location': 'Gulshan-e-Iqbal block-2'},
-  ];
-
+final DeliveryController controller = Get.put(DeliveryController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +24,7 @@ class _DeliveryScreenState extends State<DeliveryScreen>
         children: [
           const SizedBox(height: 8),
           TabBar(
-            controller: _tabController,
+            controller: controller.tabController,
             indicatorColor: Colors.blue,
             labelColor: Colors.blue,
             unselectedLabelColor: Colors.grey,
@@ -63,7 +39,7 @@ class _DeliveryScreenState extends State<DeliveryScreen>
           const SizedBox(height: 10),
           Expanded(
             child: TabBarView(
-              controller: _tabController,
+              controller: controller.tabController,
               children: [_notDeliveredList(), _deliveredList()],
             ),
           ),
@@ -93,84 +69,87 @@ class _DeliveryScreenState extends State<DeliveryScreen>
         ListView.builder(
           shrinkWrap: true,
           padding: const EdgeInsets.symmetric(horizontal: 12),
-          itemCount: users.length,
+          itemCount: controller.users.length,
           itemBuilder: (context, index) {
-            final user = users[index];
+            final user = controller.users[index];
             return Padding(
               padding: const EdgeInsets.all(6),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: ExpansionTile(
-                  trailing: Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: IconButton(
-                      onPressed: () {
-                        Get.to(()=>AddBottles());
-                      },
-                      icon: SvgPicture.asset(
-                        'assets/images/adddelivery.svg',
-                        height: 30,
+                child: CustomContainer(
+
+                  child: ExpansionTile(
+                    trailing: Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: IconButton(
+                        onPressed: () {
+                          Get.to(()=>AddBottles());
+                        },
+                        icon: SvgPicture.asset(
+                          'assets/images/adddelivery.svg',
+                          height: 30,
+                        ),
                       ),
                     ),
-                  ),
-                  collapsedBackgroundColor: Colors.grey[50],
-                  tilePadding: const EdgeInsets.all(0),
-                  collapsedShape: ShapeBorder.lerp(
-                    RoundedRectangleBorder(
-                      side: BorderSide.none,
-                      borderRadius: BorderRadius.circular(10),
+                    tilePadding: const EdgeInsets.all(0),
+                    collapsedShape: ShapeBorder.lerp(
+                      RoundedRectangleBorder(
+                        side: BorderSide.none,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      RoundedRectangleBorder(
+                        side: BorderSide.none,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      0.5,
                     ),
-                    RoundedRectangleBorder(
-                      side: BorderSide.none,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    0.5,
-                  ),
-                  title: Padding(
-                    padding: const EdgeInsets.only(left: 18, top: 8, bottom: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              user['name']!,
-                              style: GoogleFonts.poppins(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Row(
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/images/locationIcon.svg',
-                                  height: 14,
+                    title: Padding(
+                      padding: const EdgeInsets.only(left: 18, top: 8, bottom: 8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                user['name']!,
+                                style: GoogleFonts.poppins(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
                                 ),
-                                const SizedBox(width: 4),
-                                Text(
-                                  user['location']!,
-                                  style: GoogleFonts.poppins(
-                                      color: Colors.grey, fontSize: 13),
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                        SvgPicture.asset(
-                          'assets/images/arrowdown.svg',
-                        ),
-                      ],
+                              ),
+                              const SizedBox(height: 4),
+                              Row(
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/images/locationIcon.svg',
+                                    height: 14,
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    user['location']!,
+                                    style: GoogleFonts.poppins(
+                                        color: Colors.grey, fontSize: 13),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                          SvgPicture.asset(
+                            'assets/images/arrowdown.svg',
+                            width: 13,
+                          ),
+                        ],
+                      ),
                     ),
+                    children: [
+                      Text(
+                        user['location']!,
+                        style:
+                            GoogleFonts.poppins(color: Colors.grey, fontSize: 13),
+                      )
+                    ],
                   ),
-                  children: [
-                    Text(
-                      user['location']!,
-                      style:
-                          GoogleFonts.poppins(color: Colors.grey, fontSize: 13),
-                    )
-                  ],
                 ),
               ),
             );
@@ -201,9 +180,9 @@ class _DeliveryScreenState extends State<DeliveryScreen>
         ListView.builder(
           shrinkWrap: true,
           padding: const EdgeInsets.symmetric(horizontal: 12),
-          itemCount: users.length,
+          itemCount: controller.users.length,
           itemBuilder: (context, index) {
-            final user = users[index];
+            final user = controller.users[index];
             return Padding(
               padding: const EdgeInsets.all(6),
               child: ClipRRect(
@@ -266,6 +245,7 @@ class _DeliveryScreenState extends State<DeliveryScreen>
                         ),
                          SvgPicture.asset(
                           'assets/images/arrowdown.svg',
+                          width: 13,
                         ),
                       ],
                     ),

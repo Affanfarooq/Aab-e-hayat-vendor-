@@ -1,5 +1,7 @@
 import 'dart:math' as math;
+import 'package:aabehayat_vendor/Controllers/LoginController.dart';
 import 'package:aabehayat_vendor/Services/ShopService.dart';
+import 'package:aabehayat_vendor/Views/BottomNavBar.dart';
 import 'package:aabehayat_vendor/Views/BottomNavBarScreens/Dashboard.dart';
 import 'package:aabehayat_vendor/Views/WaveAnimation.dart';
 import 'package:aabehayat_vendor/Widgets/SpringWidget.dart';
@@ -38,7 +40,6 @@ class _RequestApprovalScreenState extends State<RequestApprovalScreen>
         _controller.reset();
       }
     });
-
   }
 
   @override
@@ -48,8 +49,8 @@ class _RequestApprovalScreenState extends State<RequestApprovalScreen>
   }
 
   void _onRefreshTap() {
-    _controller.forward(); 
-    checkAndUpdateRequestStatus(); 
+    _controller.forward();
+    checkAndUpdateRequestStatus();
   }
 
   Future<void> checkAndUpdateRequestStatus() async {
@@ -70,8 +71,8 @@ class _RequestApprovalScreenState extends State<RequestApprovalScreen>
             duration: Duration(seconds: 3),
           ),
         );
-      }else{
-          Get.off(() => Dashboard()); 
+      } else {
+        Get.off(() => MainScreen());
       }
     }
   }
@@ -80,6 +81,14 @@ class _RequestApprovalScreenState extends State<RequestApprovalScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(backgroundColor: Colors.white, elevation: 0, actions: [
+        IconButton(
+          icon: Icon(Icons.logout),
+          onPressed: () {
+            Get.find<LoginController>().logout();
+          },
+        )
+      ]),
       body: Column(
         children: [
           Expanded(
@@ -89,8 +98,8 @@ class _RequestApprovalScreenState extends State<RequestApprovalScreen>
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                     SizedBox(
-                      height: 60,
+                    SizedBox(
+                      height: 30,
                     ),
                     Text(
                       "Request Pending",
@@ -120,7 +129,7 @@ class _RequestApprovalScreenState extends State<RequestApprovalScreen>
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: 30), 
+                    SizedBox(height: 30),
                     SpringWidget(
                       onTap: _onRefreshTap,
                       child: AnimatedBuilder(

@@ -1,5 +1,5 @@
 import 'dart:developer';
-import 'package:aabehayat_vendor/Controllers/AuthController.dart';
+import 'package:aabehayat_vendor/Controllers/LoginController.dart';
 import 'package:aabehayat_vendor/Services/NotificationService.dart';
 import 'package:aabehayat_vendor/Views/BottomNavBar.dart';
 import 'package:aabehayat_vendor/Views/RequestApprovalScreen.dart';
@@ -19,7 +19,6 @@ void main() async {
   );
 
   NotificationService.requestNotificationPermissions();
-  await getFCMToken();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.light,
@@ -29,7 +28,8 @@ void main() async {
   ));
 
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-  final authController = Get.put(AuthController());
+  final authController = Get.put(LoginController());
+  await authController.getFCMToken();
   await authController.checkLoginStatus();
 
   Widget initialScreen;
@@ -71,9 +71,4 @@ class _MyAppState extends State<MyApp> {
       home: widget.initialScreen,
     );
   }
-}
-
-Future<void> getFCMToken() async {
-  String? token = await FirebaseMessaging.instance.getToken();
-  log("FCM Token: $token");
 }
